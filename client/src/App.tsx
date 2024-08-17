@@ -1,6 +1,5 @@
 import "normalize.css";
-import DataMonth from "DataMonth";
-import DataYear from "DataYear";
+import DataMonth from "components/DataMonth";
 
 function App() {
   return (
@@ -8,7 +7,6 @@ function App() {
       <h1>Temperature Graph</h1>
       <button onClick={() => window.location.reload()}>Reload</button>
       <DataMonth />
-      <DataYear />
     </div>
   );
 }
