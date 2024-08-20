@@ -3,10 +3,10 @@ interface Data {
   avgTa: string;
 }
 
-export const fillMonthGaps = (data: { x: string; y: number }[]) => {
+export const fillMonthGaps = (data: { x: string; y: number | null }[]) => {
   const filledData = [];
-  for (let day = 1; day <= 31; day++) {
-    const dayStr = String(day).padStart(2, "0");
+  for (let i = 1; i <= 31; i++) {
+    const dayStr = String(i).padStart(2, "0");
     const foundItem = data.find((item) => item.x === dayStr);
     if (foundItem) {
       filledData.push(foundItem);
@@ -17,30 +17,28 @@ export const fillMonthGaps = (data: { x: string; y: number }[]) => {
   return filledData;
 };
 
-export const fillYearGaps = (data: { x: string; y: number }[]) => {
+export const fillYearGaps = (
+  data: { x: string; y: number | null }[],
+  year: number
+) => {
   const filledData = [];
-  const currentDate = new Date();
-  const currentYear = currentDate.getFullYear();
+  const currentMonth = new Date().getMonth() + 1;
 
-  for (let month = 0; month < 12; month++) {
-    const daysInMonth = new Date(currentYear, month + 1, 0).getDate();
+  for (let i = 1; i <= 12; i++) {
+    const monthStr = String(i).padStart(2, "0");
+    const foundItem = data.find((item) => item.x === monthStr);
 
-    for (let day = 1; day <= daysInMonth; day++) {
-      const monthStr = String(month + 1).padStart(2, "0");
-      const dayStr = String(day).padStart(2, "0");
-
-      const foundItem = data.find((item) => item.x === `${monthStr}-${dayStr}`);
-      const currentDateStr = `${currentYear}-${monthStr}-${dayStr}`;
-
-      if (foundItem) {
-        filledData.push(foundItem);
+    if (foundItem) {
+      filledData.push(foundItem);
+    } else {
+      if (year === new Date().getFullYear() && i > currentMonth) {
+        filledData.push({ x: monthStr, y: null });
       } else {
-        if (new Date(currentDateStr) > currentDate) {
-          filledData.push({ x: `${monthStr}-${dayStr}`, y: null });
-        }
+        filledData.push({ x: monthStr, y: null });
       }
     }
   }
+
   return filledData;
 };
 
@@ -50,23 +48,36 @@ export const formatMonthData = (data: Data[]) => {
     const day = String(date.getDate()).padStart(2, "0");
     return {
       x: day,
-      y: parseFloat(item.avgTa),
+      y: item.avgTa !== "" ? parseFloat(item.avgTa) : null,
     };
   });
 
   return fillMonthGaps(formatData);
 };
 
-export const formatYearData = (data: Data[]) => {
-  const formatData = data.map((item) => {
-    const date = new Date(item.tm);
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
+export const formatYearData = (data: Data[], year: number) => {
+  const monthlyData: { [key: string]: number[] } = {};
+
+  data.forEach((item) => {
+    if (item.avgTa !== "") {
+      const date = new Date(item.tm);
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const temp = parseFloat(item.avgTa);
+
+      if (!monthlyData[month]) {
+        monthlyData[month] = [];
+      }
+      monthlyData[month].push(temp);
+    }
+  });
+
+  const formatData = Object.entries(monthlyData).map(([month, temps]) => {
+    const avgTemp = temps.reduce((sum, temp) => sum + temp, 0) / temps.length;
     return {
-      x: `${month}-${day}`,
-      y: parseFloat(item.avgTa),
+      x: month,
+      y: parseFloat(avgTemp.toFixed(1)),
     };
   });
 
-  return fillYearGaps(formatData);
+  return fillYearGaps(formatData, year);
 };

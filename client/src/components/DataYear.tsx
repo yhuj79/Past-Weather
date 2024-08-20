@@ -1,11 +1,25 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Chart from "react-apexcharts";
+import dayjs, { Dayjs } from "dayjs";
+import "dayjs/locale/ko";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch, addYear, removeYear } from "store";
+
+import InputDate from "components/InputDate";
+import InputRegion from "components/InputRegion";
 import { chartOptions } from "constants/chartOptions";
-import { formatYearData } from "utils/formatChartData";
 import regionData from "constants/regionData.json";
+import { formatYearData } from "utils/formatChartData";
+
+import Button from "@mui/material/Button";
+import {
+  Box,
+  Typography,
+  CircularProgress,
+  List,
+  ListItem,
+} from "@mui/material";
 
 interface Data {
   tm: string;
@@ -17,12 +31,12 @@ function DataYear() {
   const selectedYear = useSelector(
     (state: RootState) => state.chartData.selectedYear
   );
-  const [chartData, setChartData] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-
-  const [startDate, setStartDate] = useState<string>("20240101");
-  const [endDate, setEndDate] = useState<string>("20240818");
-  const [region, setRegion] = useState<string>("108");
+  const [chartData, setChartData] = useState<any[]>([]);
+  const [dateValue, setDateValue] = useState<Dayjs | null>(dayjs("20240101"));
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+  const [region, setRegion] = useState<string>("");
 
   const handleAdd = () => {
     dispatch(addYear({ startDate, endDate, region }));
@@ -33,6 +47,19 @@ function DataYear() {
   };
 
   useEffect(() => {
+    if (dateValue) {
+      setStartDate(dateValue.startOf("year").format("YYYYMMDD"));
+      const today = dayjs();
+
+      if (dateValue.isSame(today, "year")) {
+        setEndDate(today.subtract(1, "day").format("YYYYMMDD"));
+      } else {
+        setEndDate(dateValue.endOf("year").format("YYYYMMDD"));
+      }
+    }
+  }, [dateValue]);
+
+  useEffect(() => {
     const fetchData = async () => {
       if (selectedYear.length === 0) return;
       setLoading(true);
@@ -40,16 +67,24 @@ function DataYear() {
       const newChartData: any[] = [];
 
       for (const { startDate, endDate, region } of selectedYear) {
-        const res = await axios.get(
-          `https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${process.env.REACT_APP_API_KEY}&pageNo=1&numOfRows=999&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${startDate}&endDt=${endDate}&stnIds=${region}`
-        );
-        const items: Data[] = res.data.response.body.items.item;
-        newChartData.push({
-          name: `${startDate} ~ ${endDate} - ${
-            regionData.find((r) => r.id === region)?.name
-          }`,
-          data: formatYearData(items),
-        });
+        try {
+          const res = await axios.get(
+            `https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${process.env.REACT_APP_API_KEY}&pageNo=1&numOfRows=999&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${startDate}&endDt=${endDate}&stnIds=${region}`
+          );
+          const items: Data[] = res.data.response.body.items.item;
+          const year = dayjs(startDate).year();
+
+          newChartData.push({
+            name: `${dayjs(startDate).format("YYYY년")} ${
+              regionData.find((r) => r.id === region)?.name
+            }`,
+            data: formatYearData(items, year),
+          });
+        } catch (error) {
+          alert("해당 API가 존재하지 않습니다.");
+          dispatch(removeYear({ startDate, endDate, region }));
+          console.error("API Error: ", error);
+        }
       }
 
       setChartData(newChartData);
@@ -57,48 +92,44 @@ function DataYear() {
     };
 
     fetchData();
-  }, [selectedYear]);
+  }, [selectedYear, dispatch]);
 
   return (
-    <div>
-      <div>
-        <input
-          type="text"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          placeholder="시작 날짜 (YYYYMMDD)"
-        />
-        <input
-          type="text"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          placeholder="종료 날짜 (YYYYMMDD)"
-        />
-        <select value={region} onChange={(e) => setRegion(e.target.value)}>
-          {regionData.map((region) => (
-            <option key={region.id} value={region.id}>
-              {region.name}
-            </option>
-          ))}
-        </select>
-        <button onClick={handleAdd}>Add</button>
-        <button onClick={() => console.log(chartData)}>ChartData</button>
-      </div>
+    <Box sx={{ p: 3 }}>
+      <Typography variant="h4" gutterBottom>
+        Data Year
+      </Typography>
 
-      <ul>
+      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+        <InputDate
+          type={"year"}
+          dateValue={dateValue}
+          setDateValue={setDateValue}
+        />
+        <InputRegion region={region} setRegion={setRegion} />
+        <Button variant="contained" onClick={handleAdd}>
+          Add
+        </Button>
+      </Box>
+
+      <List>
         {selectedYear.map(({ startDate, endDate, region }) => (
-          <li key={`${startDate}-${endDate}-${region}`}>
-            {startDate} ~ {endDate} -{" "}
+          <ListItem key={`${startDate}-${endDate}-${region}`}>
+            {dayjs(startDate).format("YYYY년")}{" "}
             {regionData.find((r) => r.id === region)?.name}
-            <button onClick={() => handleRemove(startDate, endDate, region)}>
+            <Button
+              variant="contained"
+              onClick={() => handleRemove(startDate, endDate, region)}
+              sx={{ ml: 2 }}
+            >
               Remove
-            </button>
-          </li>
+            </Button>
+          </ListItem>
         ))}
-      </ul>
+      </List>
 
       {!loading ? (
-        <div>
+        <Box>
           {selectedYear.length > 0 && (
             <Chart
               options={chartOptions}
@@ -107,11 +138,13 @@ function DataYear() {
               height={500}
             />
           )}
-        </div>
+        </Box>
       ) : (
-        <p>Loading...</p>
+        <Box display="flex" justifyContent="center" mt={2}>
+          <CircularProgress />
+        </Box>
       )}
-    </div>
+    </Box>
   );
 }
 

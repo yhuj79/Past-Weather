@@ -21,7 +21,7 @@ export const chartOptions: ApexOptions = {
     curve: "smooth",
   },
   xaxis: {
-    labels: { show: false },
+    labels: { show: true },
   },
   yaxis: {
     title: {
