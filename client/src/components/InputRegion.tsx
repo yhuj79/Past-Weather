@@ -10,7 +10,7 @@ interface regionProp {
   setRegion: (value: string) => void;
 }
 
-function InputRegion({ region, setRegion }: regionProp) {
+export default function InputRegion({ region, setRegion }: regionProp) {
   return (
     <FormControl sx={{ width: 150 }} size="small">
       <InputLabel id="label-Region">지역</InputLabel>
@@ -34,5 +34,3 @@ function InputRegion({ region, setRegion }: regionProp) {
     </FormControl>
   );
 }
-
-export default InputRegion;

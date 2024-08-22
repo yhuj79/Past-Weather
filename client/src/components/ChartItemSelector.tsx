@@ -8,7 +8,7 @@ interface itemProp {
   setDataType: (value: string) => void;
 }
 
-function ChartItemSelector({ dataType, setDataType }: itemProp) {
+export default function ChartItemSelector({ dataType, setDataType }: itemProp) {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setDataType(newValue);
   };
@@ -30,4 +30,3 @@ function ChartItemSelector({ dataType, setDataType }: itemProp) {
     </Box>
   );
 }
-export default ChartItemSelector;

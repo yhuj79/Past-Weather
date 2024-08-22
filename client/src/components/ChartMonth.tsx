@@ -17,7 +17,7 @@ import { VanillaData } from "types/data";
 import Button from "@mui/material/Button";
 import { Box, CircularProgress, List, ListItem } from "@mui/material";
 
-function ChartMonth() {
+export default function ChartMonth() {
   const dispatch: AppDispatch = useDispatch();
   const selectedMonth = useSelector(
     (state: RootState) => state.chartData.selectedMonth
@@ -132,5 +132,3 @@ function ChartMonth() {
     </Box>
   );
 }
-
-export default ChartMonth;

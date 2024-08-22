@@ -10,7 +10,7 @@ interface dateProp {
   setDateValue: (value: Dayjs | null) => void;
 }
 
-function InputDate({ type, dateValue, setDateValue }: dateProp) {
+export default function InputDate({ type, dateValue, setDateValue }: dateProp) {
   const minDate = dayjs("1920-01-01");
   const maxDate = dayjs().subtract(1, "day");
 
@@ -30,5 +30,3 @@ function InputDate({ type, dateValue, setDateValue }: dateProp) {
     </LocalizationProvider>
   );
 }
-
-export default InputDate;

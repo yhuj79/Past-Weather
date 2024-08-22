@@ -10,7 +10,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 
-function App() {
+export default function App() {
   const [dateTab, setDateTab] = useState<string>("1");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -57,4 +57,3 @@ function App() {
     </Box>
   );
 }
-export default App;

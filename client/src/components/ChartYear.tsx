@@ -17,7 +17,7 @@ import { VanillaData } from "types/data";
 import Button from "@mui/material/Button";
 import { Box, CircularProgress, List, ListItem } from "@mui/material";
 
-function ChartYear() {
+export default function ChartYear() {
   const dispatch: AppDispatch = useDispatch();
   const selectedYear = useSelector(
     (state: RootState) => state.chartData.selectedYear
@@ -133,5 +133,3 @@ function ChartYear() {
     </Box>
   );
 }
-
-export default ChartYear;
