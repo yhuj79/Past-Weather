@@ -1,29 +1,60 @@
-import { useSelector } from "react-redux";
-import { RootState } from "store";
-
+import { useState } from "react";
 import "normalize.css";
-import DataMonth from "components/DataMonth";
-import DataYear from "components/DataYear";
+
+import ChartMonth from "components/ChartMonth";
+import ChartYear from "components/ChartYear";
+
+import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 
 function App() {
-  const selectedMonth = useSelector(
-    (state: RootState) => state.chartData.selectedMonth
-  );
-  const selectedYear = useSelector(
-    (state: RootState) => state.chartData.selectedYear
-  );
+  const [dateTab, setDateTab] = useState<string>("1");
+
+  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+    setDateTab(newValue);
+  };
+
   return (
-    <div style={{ margin: "30px" }}>
-      <h1>Temperature Graph</h1>
-      <button onClick={() => window.location.reload()}>Reload</button>
-      <button onClick={() => console.log(selectedMonth)}>SelectedMonth</button>
-      <button onClick={() => console.log(selectedYear)}>SelectedYear</button>
-      <br />
-      <br />
-      <DataYear />
-      <DataMonth />
-    </div>
+    <Box sx={{ width: "100%", typography: "body1" }}>
+      <TabContext value={dateTab}>
+        <Box
+          sx={{
+            bgcolor: "#019BE5",
+          }}
+        >
+          <TabList
+            sx={{
+              "& button": {
+                color: "#FFFFFF",
+              },
+              "& button:hover": { background: "#1aa5e7" },
+              "& button.Mui-selected": {
+                color: "#FFFFFF",
+              },
+            }}
+            TabIndicatorProps={{
+              style: {
+                backgroundColor: "#FFFFFF",
+              },
+            }}
+            onChange={handleChange}
+            aria-label="lab API tabs example"
+          >
+            <Tab label="월별" value="1" />
+            <Tab label="연도별" value="2" />
+          </TabList>
+        </Box>
+        <TabPanel value="1" sx={{ padding: 0 }}>
+          <ChartMonth />
+        </TabPanel>
+        <TabPanel value="2" sx={{ padding: 0 }}>
+          <ChartYear />
+        </TabPanel>
+      </TabContext>
+    </Box>
   );
 }
-
 export default App;

@@ -6,40 +6,57 @@ import "dayjs/locale/ko";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch, addYear, removeYear } from "store";
 
+import ChartItemSelector from "components/ChartItemSelector";
 import InputDate from "components/InputDate";
 import InputRegion from "components/InputRegion";
 import { chartOptions } from "constants/chartOptions";
 import regionData from "constants/regionData.json";
-import { formatYearData } from "utils/formatChartData";
+import { formatYearData, getDataSeries } from "utils/generateData";
+import { VanillaData } from "types/data";
 
 import Button from "@mui/material/Button";
-import {
-  Box,
-  Typography,
-  CircularProgress,
-  List,
-  ListItem,
-} from "@mui/material";
+import { Box, CircularProgress, List, ListItem } from "@mui/material";
 
-interface Data {
-  tm: string;
-  avgTa: string;
-}
-
-function DataYear() {
+function ChartYear() {
   const dispatch: AppDispatch = useDispatch();
   const selectedYear = useSelector(
     (state: RootState) => state.chartData.selectedYear
   );
   const [loading, setLoading] = useState<boolean>(false);
-  const [chartData, setChartData] = useState<any[]>([]);
   const [dateValue, setDateValue] = useState<Dayjs | null>(dayjs("20240101"));
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [region, setRegion] = useState<string>("");
+  const [dataType, setDataType] = useState<string>("avgTa");
 
-  const handleAdd = () => {
-    dispatch(addYear({ startDate, endDate, region }));
+  const handleAdd = async () => {
+    if (!region || !startDate || !endDate) return;
+
+    setLoading(true);
+
+    try {
+      const res = await axios.get(
+        `https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${process.env.REACT_APP_API_KEY}&pageNo=1&numOfRows=999&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${startDate}&endDt=${endDate}&stnIds=${region}`
+      );
+      const items: VanillaData[] = res.data.response.body.items.item;
+      const year = dayjs(startDate).year();
+
+      const formattedData = formatYearData(items, year);
+
+      dispatch(
+        addYear({
+          startDate,
+          endDate,
+          region,
+          data: formattedData,
+        })
+      );
+    } catch (error) {
+      alert("해당 API가 존재하지 않습니다.");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleRemove = (startDate: string, endDate: string, region: string) => {
@@ -59,59 +76,29 @@ function DataYear() {
     }
   }, [dateValue]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (selectedYear.length === 0) return;
-      setLoading(true);
-
-      const newChartData: any[] = [];
-
-      for (const { startDate, endDate, region } of selectedYear) {
-        try {
-          const res = await axios.get(
-            `https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${process.env.REACT_APP_API_KEY}&pageNo=1&numOfRows=999&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${startDate}&endDt=${endDate}&stnIds=${region}`
-          );
-          const items: Data[] = res.data.response.body.items.item;
-          const year = dayjs(startDate).year();
-
-          newChartData.push({
-            name: `${dayjs(startDate).format("YYYY년")} ${
-              regionData.find((r) => r.id === region)?.name
-            }`,
-            data: formatYearData(items, year),
-          });
-        } catch (error) {
-          alert("해당 API가 존재하지 않습니다.");
-          dispatch(removeYear({ startDate, endDate, region }));
-          console.error("API Error: ", error);
-        }
-      }
-
-      setChartData(newChartData);
-      setLoading(false);
-    };
-
-    fetchData();
-  }, [selectedYear, dispatch]);
-
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>
-        Data Year
-      </Typography>
-
-      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+    <Box>
+      <ChartItemSelector dataType={dataType} setDataType={setDataType} />
+      <Box sx={{ display: "flex", alignItems: "center", margin: 4, gap: 2 }}>
         <InputDate
           type={"year"}
           dateValue={dateValue}
           setDateValue={setDateValue}
         />
         <InputRegion region={region} setRegion={setRegion} />
-        <Button variant="contained" onClick={handleAdd}>
-          Add
+        {region !== "" ? (
+          <Button variant="contained" onClick={handleAdd}>
+            Add
+          </Button>
+        ) : (
+          <Button variant="contained" disabled>
+            Add
+          </Button>
+        )}
+        <Button variant="contained" onClick={() => console.log(selectedYear)}>
+          Selected Year
         </Button>
       </Box>
-
       <List>
         {selectedYear.map(({ startDate, endDate, region }) => (
           <ListItem key={`${startDate}-${endDate}-${region}`}>
@@ -127,13 +114,12 @@ function DataYear() {
           </ListItem>
         ))}
       </List>
-
       {!loading ? (
         <Box>
           {selectedYear.length > 0 && (
             <Chart
               options={chartOptions}
-              series={chartData}
+              series={getDataSeries(selectedYear, dataType)}
               type="line"
               height={500}
             />
@@ -148,4 +134,4 @@ function DataYear() {
   );
 }
 
-export default DataYear;
+export default ChartYear;

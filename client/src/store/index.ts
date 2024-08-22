@@ -1,8 +1,34 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ChartDataState {
-  selectedMonth: { startDate: string; endDate: string; region: string }[];
-  selectedYear: { startDate: string; endDate: string; region: string }[];
+  selectedMonth: {
+    startDate: string;
+    endDate: string;
+    region: string;
+    data: {
+      x: string;
+      avgTa: number | null;
+      maxTa: number | null;
+      minTa: number | null;
+      avgRhm: number | null;
+      sumRn: number | null;
+      avgWs: number | null;
+    }[];
+  }[];
+  selectedYear: {
+    startDate: string;
+    endDate: string;
+    region: string;
+    data: {
+      x: string;
+      avgTa: number | null;
+      maxTa: number | null;
+      minTa: number | null;
+      avgRhm: number | null;
+      sumRn: number | null;
+      avgWs: number | null;
+    }[];
+  }[];
 }
 
 const initialState: ChartDataState = {
@@ -20,6 +46,15 @@ const chartDataSlice = createSlice({
         startDate: string;
         endDate: string;
         region: string;
+        data: {
+          x: string;
+          avgTa: number | null;
+          maxTa: number | null;
+          minTa: number | null;
+          avgRhm: number | null;
+          sumRn: number | null;
+          avgWs: number | null;
+        }[];
       }>
     ) {
       state.selectedMonth.push(action.payload);
@@ -30,6 +65,15 @@ const chartDataSlice = createSlice({
         startDate: string;
         endDate: string;
         region: string;
+        data: {
+          x: string;
+          avgTa: number | null;
+          maxTa: number | null;
+          minTa: number | null;
+          avgRhm: number | null;
+          sumRn: number | null;
+          avgWs: number | null;
+        }[];
       }>
     ) {
       state.selectedYear.push(action.payload);
@@ -71,7 +115,7 @@ const chartDataSlice = createSlice({
   },
 });
 
-export const { addMonth, addYear, removeMonth, removeYear } =
+export const { addMonth, removeMonth, addYear, removeYear } =
   chartDataSlice.actions;
 
 const store = configureStore({

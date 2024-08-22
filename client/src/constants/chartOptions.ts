@@ -21,6 +21,7 @@ export const chartOptions: ApexOptions = {
     curve: "smooth",
   },
   xaxis: {
+    tickAmount: 6,
     labels: { show: true },
   },
   yaxis: {
@@ -28,7 +29,6 @@ export const chartOptions: ApexOptions = {
       text: "Average Temperature (°C)",
     },
   },
-  colors: ["#4682B4", "#32CD32", "#FF6347", "#FFA500"],
   legend: {
     position: "bottom",
   },

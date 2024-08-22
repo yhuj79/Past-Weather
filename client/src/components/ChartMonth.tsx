@@ -6,40 +6,56 @@ import "dayjs/locale/ko";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch, addMonth, removeMonth } from "store";
 
+import ChartItemSelector from "components/ChartItemSelector";
 import InputDate from "components/InputDate";
 import InputRegion from "components/InputRegion";
 import { chartOptions } from "constants/chartOptions";
 import regionData from "constants/regionData.json";
-import { formatMonthData } from "utils/formatChartData";
+import { formatMonthData, getDataSeries } from "utils/generateData";
+import { VanillaData } from "types/data";
 
 import Button from "@mui/material/Button";
-import {
-  Box,
-  Typography,
-  CircularProgress,
-  List,
-  ListItem,
-} from "@mui/material";
+import { Box, CircularProgress, List, ListItem } from "@mui/material";
 
-interface Data {
-  tm: string;
-  avgTa: string;
-}
-
-function DataMonth() {
+function ChartMonth() {
   const dispatch: AppDispatch = useDispatch();
   const selectedMonth = useSelector(
     (state: RootState) => state.chartData.selectedMonth
   );
   const [loading, setLoading] = useState<boolean>(false);
-  const [chartData, setChartData] = useState<any[]>([]);
   const [dateValue, setDateValue] = useState<Dayjs | null>(dayjs("20240801"));
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [region, setRegion] = useState<string>("");
+  const [dataType, setDataType] = useState<string>("avgTa");
 
-  const handleAdd = () => {
-    dispatch(addMonth({ startDate, endDate, region }));
+  const handleAdd = async () => {
+    if (!region || !startDate || !endDate) return;
+
+    setLoading(true);
+
+    try {
+      const res = await axios.get(
+        `https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${process.env.REACT_APP_API_KEY}&pageNo=1&numOfRows=999&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${startDate}&endDt=${endDate}&stnIds=${region}`
+      );
+      const items: VanillaData[] = res.data.response.body.items.item;
+
+      const formattedData = formatMonthData(items);
+
+      dispatch(
+        addMonth({
+          startDate,
+          endDate,
+          region,
+          data: formattedData,
+        })
+      );
+    } catch (error) {
+      alert("해당 API가 존재하지 않습니다.");
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleRemove = (startDate: string, endDate: string, region: string) => {
@@ -59,57 +75,29 @@ function DataMonth() {
     }
   }, [dateValue]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (selectedMonth.length === 0) return;
-      setLoading(true);
-
-      const newChartData: any[] = [];
-
-      for (const { startDate, endDate, region } of selectedMonth) {
-        try {
-          const res = await axios.get(
-            `https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${process.env.REACT_APP_API_KEY}&pageNo=1&numOfRows=999&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${startDate}&endDt=${endDate}&stnIds=${region}`
-          );
-          const items: Data[] = res.data.response.body.items.item;
-
-          newChartData.push({
-            name: `${dayjs(startDate).format("YYYY년 MM월")} ${
-              regionData.find((r) => r.id === region)?.name
-            }`,
-            data: formatMonthData(items),
-          });
-        } catch (error) {
-          alert("해당 API가 존재하지 않습니다.");
-          dispatch(removeMonth({ startDate, endDate, region }));
-          console.error("API Error: ", error);
-        }
-      }
-      setChartData(newChartData);
-      setLoading(false);
-    };
-
-    fetchData();
-  }, [selectedMonth, dispatch]);
-
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h4" gutterBottom>
-        Data Month
-      </Typography>
-
-      <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+    <Box>
+      <ChartItemSelector dataType={dataType} setDataType={setDataType} />
+      <Box sx={{ display: "flex", alignItems: "center", margin: 4, gap: 2 }}>
         <InputDate
           type={"month"}
           dateValue={dateValue}
           setDateValue={setDateValue}
         />
         <InputRegion region={region} setRegion={setRegion} />
-        <Button variant="contained" onClick={handleAdd}>
-          Add
+        {region !== "" ? (
+          <Button variant="contained" onClick={handleAdd}>
+            Add
+          </Button>
+        ) : (
+          <Button variant="contained" disabled>
+            Add
+          </Button>
+        )}
+        <Button variant="contained" onClick={() => console.log(selectedMonth)}>
+          Selected Month
         </Button>
       </Box>
-
       <List>
         {selectedMonth.map(({ startDate, endDate, region }) => (
           <ListItem key={`${startDate}-${endDate}-${region}`}>
@@ -125,13 +113,12 @@ function DataMonth() {
           </ListItem>
         ))}
       </List>
-
       {!loading ? (
         <Box>
           {selectedMonth.length > 0 && (
             <Chart
               options={chartOptions}
-              series={chartData}
+              series={getDataSeries(selectedMonth, dataType)}
               type="line"
               height={500}
             />
@@ -146,4 +133,4 @@ function DataMonth() {
   );
 }
 
-export default DataMonth;
+export default ChartMonth;
