@@ -21,7 +21,7 @@ export const chartOptions: ApexOptions = {
     curve: "smooth",
   },
   xaxis: {
-    tickAmount: 6,
+    tickAmount: 12,
     labels: { show: true },
   },
   yaxis: {
@@ -30,7 +30,8 @@ export const chartOptions: ApexOptions = {
     },
   },
   legend: {
-    position: "bottom",
+    // position: "bottom",
+    show: false,
   },
   tooltip: {
     enabled: true,

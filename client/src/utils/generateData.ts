@@ -159,10 +159,11 @@ export const getItemValueByType = (
 
 export const getDataSeries = (
   selectedData: SelectedData[],
-  dataType: string
+  dataType: string,
+  dateType: string
 ) => {
   return selectedData.map(({ startDate, region, data }) => ({
-    name: `${dayjs(startDate).format("YYYY년")} ${
+    name: `${dayjs(startDate).format(dateType)} ${
       regionData.find((r) => r.id === region)?.name
     }`,
     data: data.map((item) => ({

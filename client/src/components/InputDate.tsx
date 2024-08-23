@@ -1,14 +1,10 @@
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
+
+import { dateProp } from "types/input";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-
-interface dateProp {
-  type: string;
-  dateValue: Dayjs | null;
-  setDateValue: (value: Dayjs | null) => void;
-}
 
 export default function InputDate({ type, dateValue, setDateValue }: dateProp) {
   const minDate = dayjs("1920-01-01");

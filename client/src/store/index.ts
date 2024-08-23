@@ -1,39 +1,17 @@
+import dayjs from "dayjs";
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface ChartDataState {
-  selectedMonth: {
-    startDate: string;
-    endDate: string;
-    region: string;
-    data: {
-      x: string;
-      avgTa: number | null;
-      maxTa: number | null;
-      minTa: number | null;
-      avgRhm: number | null;
-      sumRn: number | null;
-      avgWs: number | null;
-    }[];
-  }[];
-  selectedYear: {
-    startDate: string;
-    endDate: string;
-    region: string;
-    data: {
-      x: string;
-      avgTa: number | null;
-      maxTa: number | null;
-      minTa: number | null;
-      avgRhm: number | null;
-      sumRn: number | null;
-      avgWs: number | null;
-    }[];
-  }[];
-}
+import { ChartDataState } from "types/data";
 
 const initialState: ChartDataState = {
   selectedMonth: [],
   selectedYear: [],
+  dataTypeMonth: "avgTa",
+  dataTypeYear: "avgTa",
+  dateValueMonth: dayjs().subtract(1, "day").date(1).format("YYYYMM01"),
+  dateValueYear: dayjs().subtract(1, "day").date(1).format("YYYY0101"),
+  regionValueMonth: "",
+  regionValueYear: "",
 };
 
 const chartDataSlice = createSlice({
@@ -112,11 +90,39 @@ const chartDataSlice = createSlice({
           )
       );
     },
+    setDataTypeMonth(state, action: PayloadAction<string>) {
+      state.dataTypeMonth = action.payload;
+    },
+    setDataTypeYear(state, action: PayloadAction<string>) {
+      state.dataTypeYear = action.payload;
+    },
+    setDateValueMonth(state, action: PayloadAction<string>) {
+      state.dateValueMonth = action.payload;
+    },
+    setDateValueYear(state, action: PayloadAction<string>) {
+      state.dateValueYear = action.payload;
+    },
+    setRegionValueMonth(state, action: PayloadAction<string>) {
+      state.regionValueMonth = action.payload;
+    },
+    setRegionValueYear(state, action: PayloadAction<string>) {
+      state.regionValueYear = action.payload;
+    },
   },
 });
 
-export const { addMonth, removeMonth, addYear, removeYear } =
-  chartDataSlice.actions;
+export const {
+  addMonth,
+  addYear,
+  removeMonth,
+  removeYear,
+  setDataTypeMonth,
+  setDataTypeYear,
+  setDateValueMonth,
+  setDateValueYear,
+  setRegionValueMonth,
+  setRegionValueYear,
+} = chartDataSlice.actions;
 
 const store = configureStore({
   reducer: {
