@@ -26,7 +26,7 @@ export default function DataTypeSelector({
     { label: "최저 기온", value: "minTa" },
     { label: "최고 기온", value: "maxTa" },
     { label: "평균 습도", value: "avgRhm" },
-    { label: "일 강수량", value: "sumRn" },
+    { label: type === "month" ? "일 강수량" : "월 강수량", value: "sumRn" },
     { label: "평균 풍속", value: "avgWs" },
   ];
 

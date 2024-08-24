@@ -120,14 +120,18 @@ export const formatYearData = (data: VanillaData[], year: number) => {
       parseFloat(
         (arr.reduce((sum, val) => sum + val, 0) / arr.length).toFixed(1)
       );
+    const max = (arr: number[]) => Math.max(...arr);
+    const min = (arr: number[]) => Math.min(...arr);
+    const sum = (arr: number[]) =>
+      parseFloat(arr.reduce((sum, val) => sum + val, 0).toFixed(1));
 
     return {
       x,
       avgTa: values.avgTa.length > 0 ? avg(values.avgTa) : null,
-      maxTa: values.maxTa.length > 0 ? avg(values.maxTa) : null,
-      minTa: values.minTa.length > 0 ? avg(values.minTa) : null,
+      maxTa: values.maxTa.length > 0 ? max(values.maxTa) : null,
+      minTa: values.minTa.length > 0 ? min(values.minTa) : null,
       avgRhm: values.avgRhm.length > 0 ? avg(values.avgRhm) : null,
-      sumRn: values.sumRn.length > 0 ? avg(values.sumRn) : null,
+      sumRn: values.sumRn.length > 0 ? sum(values.sumRn) : null,
       avgWs: values.avgWs.length > 0 ? avg(values.avgWs) : null,
     };
   });
