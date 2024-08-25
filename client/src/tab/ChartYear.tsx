@@ -1,5 +1,4 @@
 import { useEffect, useState, useMemo } from "react";
-import axios from "axios";
 import Chart from "react-apexcharts";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
@@ -16,15 +15,16 @@ import {
 
 import LoaderBackdrop from "components/LoaderBackdrop";
 import FlexBox from "components/FlexBox";
+import EmptyContainer from "components/EmptyContainer";
 import DataTypeSelector from "components/DataTypeSelector";
 import DataChips from "components/DataChips";
 import DataLabelToggle from "components/DataLabelToggle";
 import InputDate from "components/InputDate";
 import InputRegion from "components/InputRegion";
 import { getChartOptions } from "constants/chartOptions";
+import { fetchData } from "utils/fetchData";
 import { formatYearData, getDataSeries } from "utils/generateData";
 import { checkDuplicate } from "utils/checkDuplicate";
-import { VanillaData } from "types/data";
 
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
@@ -48,6 +48,11 @@ export default function ChartYear() {
     [dataLabel]
   );
 
+  const chartData = useMemo(
+    () => getDataSeries(selectedYear, dataType, "YYYY년 MM월"),
+    [selectedYear, dataType]
+  );
+
   const dateValue = dayjs(dateValueYear);
   useEffect(() => {
     if (dateValue) {
@@ -69,30 +74,8 @@ export default function ChartYear() {
     }
     setLoading(true);
 
-    const fetchData = async (retryCount = 0): Promise<VanillaData[] | null> => {
-      try {
-        const res = await axios.get(
-          `https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${process.env.REACT_APP_API_KEY}&pageNo=1&numOfRows=999&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${startDate}&endDt=${endDate}&stnIds=${region}`,
-          { timeout: 3000 } // 3초 타임아웃 설정
-        );
-        const items: VanillaData[] = res.data.response.body.items?.item;
-        return items;
-      } catch (err) {
-        if (retryCount < 30) {
-          console.log(`요청 실패, 재시도 중... (${retryCount + 1}/30)`);
-          return fetchData(retryCount + 1); // 재귀 호출로 재시도
-        } else {
-          let message;
-          if (err instanceof Error) message = err.message;
-          else message = String(err);
-          console.log(message);
-          return null;
-        }
-      }
-    };
-
     try {
-      const items = await fetchData();
+      const items = await fetchData(startDate, endDate, region);
       if (items) {
         const year = dayjs(startDate).year();
         const formattedData = formatYearData(items, year);
@@ -141,24 +124,30 @@ export default function ChartYear() {
           </Button>
         )}
       </FlexBox>
-      <DataTypeSelector type={"year"} dataType={dataType} />
-      <DataChips
-        type={"year"}
-        selectedData={selectedYear}
-        handleRemove={handleRemove}
-      />
-      <Paper sx={{ margin: 2, paddingX: 4, paddingTop: 2 }} elevation={3}>
-        <DataLabelToggle
-          dataLabel={dataLabel}
-          setDataLabel={() => dispatch(setDataLabelYear())}
-        />
-        <Chart
-          options={chartOptions}
-          series={getDataSeries(selectedYear, dataType, "YYYY년")}
-          type="line"
-          height={300}
-        />
-      </Paper>
+      {selectedYear.length > 0 ? (
+        <>
+          <DataTypeSelector type={"year"} dataType={dataType} />
+          <DataChips
+            type={"year"}
+            selectedData={selectedYear}
+            handleRemove={handleRemove}
+          />
+          <Paper sx={{ margin: 2, paddingX: 4, paddingTop: 2 }} elevation={3}>
+            <DataLabelToggle
+              dataLabel={dataLabel}
+              setDataLabel={() => dispatch(setDataLabelYear())}
+            />
+            <Chart
+              options={chartOptions}
+              series={chartData}
+              type="line"
+              height={300}
+            />
+          </Paper>
+        </>
+      ) : (
+        <EmptyContainer />
+      )}
     </>
   );
 }

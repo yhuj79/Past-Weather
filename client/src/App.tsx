@@ -2,8 +2,8 @@ import { useState } from "react";
 import "normalize.css";
 
 import Header from "components/Header";
-import ChartMonth from "components/ChartMonth";
-import ChartYear from "components/ChartYear";
+import ChartMonth from "tab/ChartMonth";
+import ChartYear from "tab/ChartYear";
 
 import { createTheme, ThemeProvider } from "@mui/material";
 import Box from "@mui/material/Box";
