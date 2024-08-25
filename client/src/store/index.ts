@@ -12,6 +12,8 @@ const initialState: ChartDataState = {
   dateValueYear: dayjs().subtract(1, "day").date(1).format("YYYY0101"),
   regionValueMonth: "",
   regionValueYear: "",
+  dataLabelMonth: false,
+  dataLabelYear: false,
 };
 
 const chartDataSlice = createSlice({
@@ -108,6 +110,12 @@ const chartDataSlice = createSlice({
     setRegionValueYear(state, action: PayloadAction<string>) {
       state.regionValueYear = action.payload;
     },
+    setDataLabelMonth(state) {
+      state.dataLabelMonth = !state.dataLabelMonth;
+    },
+    setDataLabelYear(state) {
+      state.dataLabelYear = !state.dataLabelYear;
+    },
   },
 });
 
@@ -122,6 +130,8 @@ export const {
   setDateValueYear,
   setRegionValueMonth,
   setRegionValueYear,
+  setDataLabelMonth,
+  setDataLabelYear,
 } = chartDataSlice.actions;
 
 const store = configureStore({

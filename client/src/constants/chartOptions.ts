@@ -1,40 +1,49 @@
 import { ApexOptions } from "apexcharts";
 
-export const chartOptions: ApexOptions = {
-  chart: {
-    type: "line",
-    height: 600,
-    toolbar: {
-      show: true,
-      tools: {
-        zoom: true,
-        zoomin: true,
-        zoomout: true,
-        download: true,
-        pan: false,
-        reset: false,
-        selection: false,
+import { chartColors } from "constants/chartColors";
+
+export const getChartOptions = (
+  type: string,
+  dataLabels: boolean
+): ApexOptions => {
+  return {
+    chart: {
+      type: "line",
+      toolbar: {
+        show: true,
+        tools: {
+          zoom: true,
+          zoomin: true,
+          zoomout: true,
+          download: true,
+          pan: false,
+          reset: false,
+          selection: false,
+        },
       },
     },
-  },
-  stroke: {
-    curve: "smooth",
-  },
-  xaxis: {
-    tickAmount: 12,
-    labels: { show: true },
-  },
-  yaxis: {
-    title: {
-      text: "Average Temperature (°C)",
+    dataLabels: {
+      enabled: dataLabels,
     },
-  },
-  legend: {
-    // position: "bottom",
-    show: false,
-  },
-  tooltip: {
-    enabled: true,
-    shared: true,
-  },
+    stroke: {
+      curve: "smooth",
+    },
+    xaxis: {
+      tickAmount: 12,
+      labels: {
+        show: true,
+        formatter: function (value) {
+          return parseInt(value).toString() + (type === "month" ? "일" : "월");
+        },
+      },
+    },
+    legend: {
+      show: false,
+    },
+    tooltip: {
+      enabled: true,
+      shared: true,
+    },
+    colors: chartColors,
+  };
 };

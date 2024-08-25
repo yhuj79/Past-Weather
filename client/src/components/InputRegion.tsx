@@ -1,10 +1,10 @@
 import regionData from "constants/regionData.json";
 import { regionProp } from "types/input";
 
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 
 export default function InputRegion({ region, setRegion }: regionProp) {
   return (

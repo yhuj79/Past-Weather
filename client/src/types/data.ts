@@ -33,6 +33,8 @@ export interface ChartDataState {
   dateValueYear: string;
   regionValueMonth: string;
   regionValueYear: string;
+  dataLabelMonth: boolean;
+  dataLabelYear: boolean;
 }
 
 export interface VanillaData {

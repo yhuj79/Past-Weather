@@ -2,10 +2,12 @@ import dayjs from "dayjs";
 
 import FlexBox from "components/FlexBox";
 import regionData from "constants/regionData.json";
+import { chartColors } from "constants/chartColors";
 import { SelectedData } from "types/data";
 
-import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
+import Chip from "@mui/material/Chip";
+import CircleIcon from "@mui/icons-material/Circle";
 
 export default function DataChips({
   type,
@@ -19,8 +21,14 @@ export default function DataChips({
   return (
     <FlexBox>
       <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
-        {selectedData.map(({ startDate, endDate, region }) => (
+        {selectedData.map(({ startDate, endDate, region }, index) => (
           <Chip
+            size="small"
+            icon={
+              <CircleIcon
+                style={{ color: chartColors[index % chartColors.length] }}
+              />
+            }
             key={`${startDate}-${endDate}-${region}`}
             label={`${dayjs(startDate).format(
               type === "month" ? "YYYY년 MM월" : "YYYY년"

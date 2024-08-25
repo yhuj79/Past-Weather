@@ -2,8 +2,8 @@ import dayjs from "dayjs";
 
 import { dateProp } from "types/input";
 
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 export default function InputDate({ type, dateValue, setDateValue }: dateProp) {

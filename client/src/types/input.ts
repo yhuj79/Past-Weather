@@ -10,3 +10,8 @@ export interface regionProp {
   region: string;
   setRegion: (value: string) => void;
 }
+
+export interface dataLabelProp {
+  dataLabel: boolean;
+  setDataLabel: () => void;
+}

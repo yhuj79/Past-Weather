@@ -1,8 +1,8 @@
 import { useDispatch } from "react-redux";
 import { AppDispatch, setDataTypeMonth, setDataTypeYear } from "store";
 
-import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import Button from "@mui/material/Button";
 
 export default function DataTypeSelector({
   type,
