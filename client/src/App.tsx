@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "normalize.css";
 
-import Header from "components/Header";
-import ChartMonth from "tab/ChartMonth";
-import ChartYear from "tab/ChartYear";
+import Header from "components/common/Header";
+import Month from "tab/Month";
+import Year from "tab/Year";
 
 import { createTheme, ThemeProvider } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -51,7 +51,7 @@ export default function App() {
               unmountOnExit
             >
               <div>
-                <ChartMonth />
+                <Month />
               </div>
             </Slide>
           </TabPanel>
@@ -63,7 +63,7 @@ export default function App() {
               unmountOnExit
             >
               <div>
-                <ChartYear />
+                <Year />
               </div>
             </Slide>
           </TabPanel>

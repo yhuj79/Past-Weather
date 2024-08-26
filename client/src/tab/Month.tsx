@@ -1,5 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
-import Chart from "react-apexcharts";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,23 +12,23 @@ import {
   setDataLabelMonth,
 } from "store";
 
-import LoaderBackdrop from "components/LoaderBackdrop";
-import FlexBox from "components/FlexBox";
-import EmptyContainer from "components/EmptyContainer";
-import DataTypeSelector from "components/DataTypeSelector";
-import DataChips from "components/DataChips";
-import DataLabelToggle from "components/DataLabelToggle";
-import InputDate from "components/InputDate";
-import InputRegion from "components/InputRegion";
-import { getChartOptions } from "constants/chartOptions";
+import LoaderBackdrop from "components/common/LoaderBackdrop";
+import FlexBox from "components/common/FlexBox";
+import EmptyContainer from "components/common/EmptyContainer";
+import DataTypeSelector from "components/selector/DataTypeSelector";
+import DataChips from "components/selector/DataChips";
+import InputDate from "components/selector/InputDate";
+import InputRegion from "components/selector/InputRegion";
+import Line from "components/chart/Line";
+import DonutTa from "components/chart/DonutTa";
+import DonutRhm from "components/chart/DonutRhm";
 import { fetchData } from "utils/fetchData";
-import { formatMonthData, getDataSeries } from "utils/generateData";
+import { formatMonthData } from "utils/generateData";
 import { checkDuplicate } from "utils/checkDuplicate";
 
 import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
 
-export default function ChartMonth() {
+export default function Month() {
   const dispatch: AppDispatch = useDispatch();
   const {
     selectedMonth,
@@ -42,16 +41,6 @@ export default function ChartMonth() {
   const [loading, setLoading] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
-
-  const chartOptions = useMemo(
-    () => getChartOptions("month", dataLabel),
-    [dataLabel]
-  );
-
-  const chartData = useMemo(
-    () => getDataSeries(selectedMonth, dataType, "YYYY년 MM월"),
-    [selectedMonth, dataType]
-  );
 
   const dateValue = dayjs(dateValueMonth);
   useEffect(() => {
@@ -101,7 +90,7 @@ export default function ChartMonth() {
   return (
     <>
       {loading && <LoaderBackdrop loading={loading} />}
-      <FlexBox>
+      <FlexBox rwd={false}>
         <InputDate
           type={"month"}
           dateValue={dateValue}
@@ -115,37 +104,33 @@ export default function ChartMonth() {
         />
         {region !== "" ? (
           <Button variant="contained" onClick={handleAdd}>
-            Add
+            선택
           </Button>
         ) : (
           <Button variant="contained" disabled>
-            Add
+            선택
           </Button>
         )}
-        <Button variant="contained" onClick={() => console.log(selectedMonth)}>
-          CONSOLE
-        </Button>
+        <DataTypeSelector type={"month"} dataType={dataType} />
       </FlexBox>
       {selectedMonth.length > 0 ? (
         <>
-          <DataTypeSelector type={"month"} dataType={dataType} />
           <DataChips
             type={"month"}
             selectedData={selectedMonth}
             handleRemove={handleRemove}
           />
-          <Paper sx={{ margin: 2, paddingX: 4, paddingTop: 2 }} elevation={3}>
-            <DataLabelToggle
-              dataLabel={dataLabel}
-              setDataLabel={() => dispatch(setDataLabelMonth())}
-            />
-            <Chart
-              options={chartOptions}
-              series={chartData}
-              type="line"
-              height={300}
-            />
-          </Paper>
+          <Line
+            type={"month"}
+            selectedData={selectedMonth}
+            dataType={dataType}
+            dataLabel={dataLabel}
+            setDataLabel={() => dispatch(setDataLabelMonth())}
+          />
+          <FlexBox rwd={true}>
+            <DonutTa selectedData={selectedMonth} />
+            <DonutRhm selectedData={selectedMonth} />
+          </FlexBox>
         </>
       ) : (
         <EmptyContainer />

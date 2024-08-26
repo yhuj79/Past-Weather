@@ -1,10 +1,11 @@
 import { ApexOptions } from "apexcharts";
 
-import { chartColors } from "constants/chartColors";
+import { chartColorsLine } from "constants/chartColors";
 
 export const getChartOptions = (
   type: string,
-  dataLabels: boolean
+  dataLabels: boolean,
+  tickAmount: number
 ): ApexOptions => {
   return {
     chart: {
@@ -29,7 +30,7 @@ export const getChartOptions = (
       curve: "smooth",
     },
     xaxis: {
-      tickAmount: 12,
+      tickAmount: tickAmount,
       labels: {
         show: true,
         formatter: function (value) {
@@ -44,6 +45,6 @@ export const getChartOptions = (
       enabled: true,
       shared: true,
     },
-    colors: chartColors,
+    colors: chartColorsLine,
   };
 };

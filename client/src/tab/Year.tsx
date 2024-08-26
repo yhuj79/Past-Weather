@@ -1,5 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
-import Chart from "react-apexcharts";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,23 +12,23 @@ import {
   setDataLabelYear,
 } from "store";
 
-import LoaderBackdrop from "components/LoaderBackdrop";
-import FlexBox from "components/FlexBox";
-import EmptyContainer from "components/EmptyContainer";
-import DataTypeSelector from "components/DataTypeSelector";
-import DataChips from "components/DataChips";
-import DataLabelToggle from "components/DataLabelToggle";
-import InputDate from "components/InputDate";
-import InputRegion from "components/InputRegion";
-import { getChartOptions } from "constants/chartOptions";
+import LoaderBackdrop from "components/common/LoaderBackdrop";
+import FlexBox from "components/common/FlexBox";
+import EmptyContainer from "components/common/EmptyContainer";
+import DataTypeSelector from "components/selector/DataTypeSelector";
+import DataChips from "components/selector/DataChips";
+import InputDate from "components/selector/InputDate";
+import InputRegion from "components/selector/InputRegion";
+import Line from "components/chart/Line";
+import DonutTa from "components/chart/DonutTa";
+import DonutRhm from "components/chart/DonutRhm";
 import { fetchData } from "utils/fetchData";
-import { formatYearData, getDataSeries } from "utils/generateData";
+import { formatYearData } from "utils/generateData";
 import { checkDuplicate } from "utils/checkDuplicate";
 
 import Button from "@mui/material/Button";
-import Paper from "@mui/material/Paper";
 
-export default function ChartYear() {
+export default function Year() {
   const dispatch: AppDispatch = useDispatch();
   const {
     selectedYear,
@@ -42,16 +41,6 @@ export default function ChartYear() {
   const [loading, setLoading] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
-
-  const chartOptions = useMemo(
-    () => getChartOptions("year", dataLabel),
-    [dataLabel]
-  );
-
-  const chartData = useMemo(
-    () => getDataSeries(selectedYear, dataType, "YYYY년 MM월"),
-    [selectedYear, dataType]
-  );
 
   const dateValue = dayjs(dateValueYear);
   useEffect(() => {
@@ -102,48 +91,47 @@ export default function ChartYear() {
   return (
     <>
       {loading && <LoaderBackdrop loading={loading} />}
-      <FlexBox>
+      <FlexBox rwd={false}>
         <InputDate
           type={"year"}
           dateValue={dateValue}
-          setDateValue={(newValue) =>
-            dispatch(setDateValueYear(dayjs(newValue).format("YYYY0101")))
+          setDateValue={(v) =>
+            dispatch(setDateValueYear(dayjs(v).format("YYYY0101")))
           }
         />
         <InputRegion
           region={region}
-          setRegion={(newValue) => dispatch(setRegionValueYear(newValue))}
+          setRegion={(v) => dispatch(setRegionValueYear(v))}
         />
         {region !== "" ? (
           <Button variant="contained" onClick={handleAdd}>
-            Add
+            선택
           </Button>
         ) : (
           <Button variant="contained" disabled>
-            Add
+            선택
           </Button>
         )}
+        <DataTypeSelector type={"year"} dataType={dataType} />
       </FlexBox>
       {selectedYear.length > 0 ? (
         <>
-          <DataTypeSelector type={"year"} dataType={dataType} />
           <DataChips
             type={"year"}
             selectedData={selectedYear}
             handleRemove={handleRemove}
           />
-          <Paper sx={{ margin: 2, paddingX: 4, paddingTop: 2 }} elevation={3}>
-            <DataLabelToggle
-              dataLabel={dataLabel}
-              setDataLabel={() => dispatch(setDataLabelYear())}
-            />
-            <Chart
-              options={chartOptions}
-              series={chartData}
-              type="line"
-              height={300}
-            />
-          </Paper>
+          <Line
+            type={"year"}
+            selectedData={selectedYear}
+            dataType={dataType}
+            dataLabel={dataLabel}
+            setDataLabel={() => dispatch(setDataLabelYear())}
+          />
+          <FlexBox rwd={true}>
+            <DonutTa selectedData={selectedYear} />
+            <DonutRhm selectedData={selectedYear} />
+          </FlexBox>
         </>
       ) : (
         <EmptyContainer />

@@ -6,6 +6,8 @@ import { ChartDataState } from "types/data";
 const initialState: ChartDataState = {
   selectedMonth: [],
   selectedYear: [],
+  // avgTaDistMonth: new Array<number>(7).fill(0),
+  // avgTaDistYear: new Array<number>(7).fill(0),
   dataTypeMonth: "avgTa",
   dataTypeYear: "avgTa",
   dateValueMonth: dayjs().subtract(1, "day").date(1).format("YYYYMM01"),
@@ -92,6 +94,12 @@ const chartDataSlice = createSlice({
           )
       );
     },
+    // updateAvgTaDistMonth(state, action: PayloadAction<number[]>) {
+    //   state.avgTaDistMonth = action.payload;
+    // },
+    // updateAvgTaDistYear(state, action: PayloadAction<number[]>) {
+    //   state.avgTaDistYear = action.payload;
+    // },
     setDataTypeMonth(state, action: PayloadAction<string>) {
       state.dataTypeMonth = action.payload;
     },
@@ -124,6 +132,8 @@ export const {
   addYear,
   removeMonth,
   removeYear,
+  // updateAvgTaDistMonth,
+  // updateAvgTaDistYear,
   setDataTypeMonth,
   setDataTypeYear,
   setDateValueMonth,

@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 
-import FlexBox from "components/FlexBox";
+import FlexBox from "components/common/FlexBox";
 import regionData from "constants/regionData.json";
-import { chartColors } from "constants/chartColors";
+import { chartColorsLine } from "constants/chartColors";
 import { SelectedData } from "types/data";
 
 import Stack from "@mui/material/Stack";
@@ -19,14 +19,16 @@ export default function DataChips({
   handleRemove: (startDate: string, endDate: string, region: string) => void;
 }) {
   return (
-    <FlexBox>
+    <FlexBox rwd={false}>
       <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
         {selectedData.map(({ startDate, endDate, region }, index) => (
           <Chip
             size="small"
             icon={
               <CircleIcon
-                style={{ color: chartColors[index % chartColors.length] }}
+                style={{
+                  color: chartColorsLine[index % chartColorsLine.length],
+                }}
               />
             }
             key={`${startDate}-${endDate}-${region}`}

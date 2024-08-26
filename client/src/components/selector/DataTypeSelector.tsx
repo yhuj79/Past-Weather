@@ -31,7 +31,7 @@ export default function DataTypeSelector({
   ];
 
   return (
-    <ButtonGroup aria-label="Basic button group" sx={{ marginX: 2 }}>
+    <ButtonGroup aria-label="Basic button group">
       {buttons.map((button) => (
         <Button
           key={button.value}
