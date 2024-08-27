@@ -28,7 +28,7 @@ import { checkDuplicate } from "utils/checkDuplicate";
 
 import Button from "@mui/material/Button";
 
-export default function Month() {
+export default function Month({ tab }: { tab: string }) {
   const dispatch: AppDispatch = useDispatch();
   const {
     selectedMonth,
@@ -92,7 +92,7 @@ export default function Month() {
       {loading && <LoaderBackdrop loading={loading} />}
       <FlexBox rwd={false}>
         <InputDate
-          type={"month"}
+          tab={tab}
           dateValue={dateValue}
           setDateValue={(v) =>
             dispatch(setDateValueMonth(dayjs(v).format("YYYYMM01")))
@@ -111,17 +111,20 @@ export default function Month() {
             선택
           </Button>
         )}
-        <DataTypeSelector type={"month"} dataType={dataType} />
+        <Button variant="contained" onClick={() => console.log(selectedMonth)}>
+          console
+        </Button>
+        <DataTypeSelector tab={tab} dataType={dataType} />
       </FlexBox>
       {selectedMonth.length > 0 ? (
         <>
           <DataChips
-            type={"month"}
+            tab={tab}
             selectedData={selectedMonth}
             handleRemove={handleRemove}
           />
           <Line
-            type={"month"}
+            tab={tab}
             selectedData={selectedMonth}
             dataType={dataType}
             dataLabel={dataLabel}

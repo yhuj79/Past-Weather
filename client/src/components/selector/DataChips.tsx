@@ -10,11 +10,11 @@ import Chip from "@mui/material/Chip";
 import CircleIcon from "@mui/icons-material/Circle";
 
 export default function DataChips({
-  type,
+  tab,
   selectedData,
   handleRemove,
 }: {
-  type: string;
+  tab: string;
   selectedData: SelectedData[];
   handleRemove: (startDate: string, endDate: string, region: string) => void;
 }) {
@@ -33,7 +33,7 @@ export default function DataChips({
             }
             key={`${startDate}-${endDate}-${region}`}
             label={`${dayjs(startDate).format(
-              type === "month" ? "YYYY년 MM월" : "YYYY년"
+              tab === "month" ? "YYYY년 MM월" : "YYYY년"
             )} ${regionData.find((r) => r.id === region)?.name}`}
             onDelete={() => handleRemove(startDate, endDate, region)}
           />

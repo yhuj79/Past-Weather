@@ -28,7 +28,7 @@ import { checkDuplicate } from "utils/checkDuplicate";
 
 import Button from "@mui/material/Button";
 
-export default function Year() {
+export default function Year({ tab }: { tab: string }) {
   const dispatch: AppDispatch = useDispatch();
   const {
     selectedYear,
@@ -93,7 +93,7 @@ export default function Year() {
       {loading && <LoaderBackdrop loading={loading} />}
       <FlexBox rwd={false}>
         <InputDate
-          type={"year"}
+          tab={tab}
           dateValue={dateValue}
           setDateValue={(v) =>
             dispatch(setDateValueYear(dayjs(v).format("YYYY0101")))
@@ -112,17 +112,17 @@ export default function Year() {
             선택
           </Button>
         )}
-        <DataTypeSelector type={"year"} dataType={dataType} />
+        <DataTypeSelector tab={tab} dataType={dataType} />
       </FlexBox>
       {selectedYear.length > 0 ? (
         <>
           <DataChips
-            type={"year"}
+            tab={tab}
             selectedData={selectedYear}
             handleRemove={handleRemove}
           />
           <Line
-            type={"year"}
+            tab={tab}
             selectedData={selectedYear}
             dataType={dataType}
             dataLabel={dataLabel}

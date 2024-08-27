@@ -5,16 +5,16 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 
 export default function DataTypeSelector({
-  type,
+  tab,
   dataType,
 }: {
-  type: string;
+  tab: string;
   dataType: string;
 }) {
   const dispatch: AppDispatch = useDispatch();
 
   const handleSetDataType = (selectedDataType: string) => {
-    if (type === "month") {
+    if (tab === "month") {
       dispatch(setDataTypeMonth(selectedDataType));
     } else {
       dispatch(setDataTypeYear(selectedDataType));
@@ -26,7 +26,7 @@ export default function DataTypeSelector({
     { label: "최저 기온", value: "minTa" },
     { label: "최고 기온", value: "maxTa" },
     { label: "평균 습도", value: "avgRhm" },
-    { label: type === "month" ? "일 강수량" : "월 강수량", value: "sumRn" },
+    { label: tab === "month" ? "일 강수량" : "월 강수량", value: "sumRn" },
     { label: "평균 풍속", value: "avgWs" },
   ];
 

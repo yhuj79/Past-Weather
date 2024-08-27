@@ -1,11 +1,12 @@
 import { useState } from "react";
 import "normalize.css";
 
-import Header from "components/common/Header";
 import Month from "tab/Month";
 import Year from "tab/Year";
+import Header from "components/common/Header";
+import Map from "components/map/Map";
 
-import { createTheme, ThemeProvider } from "@mui/material";
+import { createTheme, Grid, ThemeProvider } from "@mui/material";
 import Box from "@mui/material/Box";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
@@ -20,12 +21,12 @@ const theme = createTheme({
 });
 
 export default function App() {
-  const [dateTab, setDateTab] = useState<string>("1");
-  const [prevTab, setPrevTab] = useState<string>("1");
+  const [tab, setTab] = useState<string>("month");
+  const [prevTab, setPrevTab] = useState<string>("month");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setPrevTab(dateTab);
-    setDateTab(newValue);
+    setPrevTab(tab);
+    setTab(newValue);
   };
 
   const getDirection = (current: string, previous: string) => {
@@ -34,39 +35,57 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ width: "100%", typography: "body1" }}>
+      <Box
+        sx={{
+          width: "100%",
+          height: "100vh",
+          typography: "body1",
+        }}
+      >
         <Header />
-        <TabContext value={dateTab}>
-          <Box sx={{ width: "100%", borderBottom: 1, borderColor: "divider" }}>
-            <TabList onChange={handleChange} aria-label="lab API tabs example">
-              <Tab label="월별" value="1" />
-              <Tab label="연도별" value="2" />
-            </TabList>
-          </Box>
-          <TabPanel value="1" sx={{ padding: 0 }}>
-            <Slide
-              in={dateTab === "1"}
-              direction={getDirection(dateTab, prevTab)}
-              mountOnEnter
-              unmountOnExit
-            >
-              <div>
-                <Month />
-              </div>
-            </Slide>
-          </TabPanel>
-          <TabPanel value="2" sx={{ padding: 0 }}>
-            <Slide
-              in={dateTab === "2"}
-              direction={getDirection(dateTab, prevTab)}
-              mountOnEnter
-              unmountOnExit
-            >
-              <div>
-                <Year />
-              </div>
-            </Slide>
-          </TabPanel>
+        <TabContext value={tab}>
+          <Grid container sx={{ height: "calc(100% - 64px)" }}>
+            <Grid item xs={8}>
+              <Box
+                sx={{ width: "100%", borderBottom: 1, borderColor: "divider" }}
+              >
+                <TabList
+                  onChange={handleChange}
+                  aria-label="lab API tabs example"
+                >
+                  <Tab label="월별" value="month" />
+                  <Tab label="연도별" value="year" />
+                </TabList>
+              </Box>
+              <TabPanel value="month" sx={{ padding: 0 }}>
+                <Slide
+                  in={tab === "month"}
+                  direction={getDirection(tab, prevTab)}
+                  mountOnEnter
+                  unmountOnExit
+                >
+                  <div>
+                    <Month tab={tab} />
+                  </div>
+                </Slide>
+              </TabPanel>
+              <TabPanel value="year" sx={{ padding: 0 }}>
+                <Slide
+                  in={tab === "year"}
+                  direction={getDirection(tab, prevTab)}
+                  mountOnEnter
+                  unmountOnExit
+                >
+                  <div>
+                    <Year tab={tab} />
+                  </div>
+                </Slide>
+              </TabPanel>
+            </Grid>
+            <Grid item xs={4} sx={{ border: 1, borderColor: "divider" }}>
+              <Map tab={tab} />
+            </Grid>
+          </Grid>
         </TabContext>
       </Box>
     </ThemeProvider>

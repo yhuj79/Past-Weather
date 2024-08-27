@@ -1,7 +1,7 @@
 import { Dayjs } from "dayjs";
 
 export interface dateProp {
-  type: string;
+  tab: string;
   dateValue: Dayjs | null;
   setDateValue: (value: Dayjs | null) => void;
 }

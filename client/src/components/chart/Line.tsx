@@ -11,13 +11,13 @@ import { useTheme, useMediaQuery } from "@mui/material";
 import Paper from "@mui/material/Paper";
 
 export default function Line({
-  type,
+  tab,
   selectedData,
   dataType,
   dataLabel,
   setDataLabel,
 }: {
-  type: string;
+  tab: string;
   selectedData: SelectedData[];
   dataType: string;
   dataLabel: boolean;
@@ -38,7 +38,7 @@ export default function Line({
   const chartOptions = useMemo(
     () =>
       getChartOptions(
-        type === "month" ? "month" : "year",
+        tab === "month" ? "month" : "year",
         dataLabel,
         tickAmount
       ),
@@ -50,7 +50,7 @@ export default function Line({
       getDataSeries(
         selectedData,
         dataType,
-        type === "month" ? "YYYY년 MM월" : "YYYY년"
+        tab === "month" ? "YYYY년 MM월" : "YYYY년"
       ),
     [selectedData, dataType]
   );
