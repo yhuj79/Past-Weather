@@ -26,9 +26,12 @@ export default function Map({ tab }: { tab: string }) {
 
   const markers = useMemo(() => {
     const dataToDisplay = tab === "month" ? selectedMonth : selectedYear;
+    const uniqueRegionIds = Array.from(
+      new Set(dataToDisplay.map((data) => data.region))
+    );
 
-    return dataToDisplay.map((data) => {
-      const regionInfo = regionData.find((region) => region.id === data.region);
+    return uniqueRegionIds.map((regionId) => {
+      const regionInfo = regionData.find((region) => region.id === regionId);
       if (regionInfo) {
         return (
           <Marker

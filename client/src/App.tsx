@@ -12,7 +12,6 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import Tab from "@mui/material/Tab";
 import TabPanel from "@mui/lab/TabPanel";
-import Slide from "@mui/material/Slide";
 
 const theme = createTheme({
   typography: {
@@ -22,15 +21,9 @@ const theme = createTheme({
 
 export default function App() {
   const [tab, setTab] = useState<string>("month");
-  const [prevTab, setPrevTab] = useState<string>("month");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setPrevTab(tab);
     setTab(newValue);
-  };
-
-  const getDirection = (current: string, previous: string) => {
-    return current > previous ? "left" : "right";
   };
 
   return (
@@ -58,28 +51,10 @@ export default function App() {
                 </TabList>
               </Box>
               <TabPanel value="month" sx={{ padding: 0 }}>
-                <Slide
-                  in={tab === "month"}
-                  direction={getDirection(tab, prevTab)}
-                  mountOnEnter
-                  unmountOnExit
-                >
-                  <div>
-                    <Month tab={tab} />
-                  </div>
-                </Slide>
+                <Month tab={tab} />
               </TabPanel>
               <TabPanel value="year" sx={{ padding: 0 }}>
-                <Slide
-                  in={tab === "year"}
-                  direction={getDirection(tab, prevTab)}
-                  mountOnEnter
-                  unmountOnExit
-                >
-                  <div>
-                    <Year tab={tab} />
-                  </div>
-                </Slide>
+                <Year tab={tab} />
               </TabPanel>
             </Grid>
             <Grid item xs={4} sx={{ border: 1, borderColor: "divider" }}>

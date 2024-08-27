@@ -111,9 +111,6 @@ export default function Month({ tab }: { tab: string }) {
             선택
           </Button>
         )}
-        <Button variant="contained" onClick={() => console.log(selectedMonth)}>
-          console
-        </Button>
         <DataTypeSelector tab={tab} dataType={dataType} />
       </FlexBox>
       {selectedMonth.length > 0 ? (
