@@ -144,7 +144,7 @@ export default function Month({ tab }: { tab: string }) {
           />
           <Box
             sx={{
-              display: { xs: "block", sm: "flex" },
+              display: is720Up ? "flex" : "block",
               alignItems: "center",
               margin: 2,
               gap: 2,
