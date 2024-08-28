@@ -31,7 +31,7 @@ export const chartOptions: ApexOptions = {
             label: "평균 습도",
             fontFamily: "Noto Sans KR, sans-serif",
             fontWeight: "400",
-            fontSize: "1.2rem",
+            fontSize: "1.1rem",
             formatter(w) {
               return (
                 w.globals.seriesTotals.reduce(
@@ -44,7 +44,7 @@ export const chartOptions: ApexOptions = {
           value: {
             fontFamily: "Noto Sans KR, sans-serif",
             fontWeight: "400",
-            fontSize: "1.2rem",
+            fontSize: "1.1rem",
             formatter(val) {
               return val + " data";
             },
@@ -58,10 +58,10 @@ export const chartOptions: ApexOptions = {
   },
   grid: {
     padding: {
-      top: 10,
-      bottom: 8,
-      left: 8,
-      right: 8,
+      top: 15,
+      bottom: 12,
+      left: 12,
+      right: 12,
     },
   },
   dataLabels: {
@@ -74,6 +74,7 @@ export const chartOptions: ApexOptions = {
   },
   legend: {
     show: true,
+    width: 60,
     offsetY: -12,
     itemMargin: {
       horizontal: 0,

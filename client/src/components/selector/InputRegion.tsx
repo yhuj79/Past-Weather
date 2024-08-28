@@ -8,13 +8,16 @@ import MenuItem from "@mui/material/MenuItem";
 
 export default function InputRegion({ region, setRegion }: regionProp) {
   return (
-    <FormControl sx={{ width: 150 }} size="small">
-      <InputLabel id="label-Region">지역</InputLabel>
+    <FormControl sx={{ width: "100%" }} size="small">
+      <InputLabel sx={{ fontSize: 14 }} id="label-Region">
+        지역
+      </InputLabel>
       <Select
         labelId="label-Region"
         id="label-Region"
         value={region}
         label="Region"
+        sx={{ fontSize: 14 }}
         MenuProps={{ style: { maxHeight: 360 } }}
         onChange={(e) => setRegion(e.target.value)}
       >

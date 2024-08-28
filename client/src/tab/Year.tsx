@@ -13,7 +13,6 @@ import {
 } from "store";
 
 import LoaderBackdrop from "components/common/LoaderBackdrop";
-import FlexBox from "components/common/FlexBox";
 import EmptyContainer from "components/common/EmptyContainer";
 import DataTypeSelector from "components/selector/DataTypeSelector";
 import DataChips from "components/selector/DataChips";
@@ -26,9 +25,12 @@ import { fetchData } from "utils/fetchData";
 import { formatYearData } from "utils/generateData";
 import { checkDuplicate } from "utils/checkDuplicate";
 
+import { useMediaQuery } from "@mui/material";
+import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
 
 export default function Year({ tab }: { tab: string }) {
+  const is720Up = useMediaQuery("(min-width:720px)");
   const dispatch: AppDispatch = useDispatch();
   const {
     selectedYear,
@@ -91,19 +93,32 @@ export default function Year({ tab }: { tab: string }) {
   return (
     <>
       {loading && <LoaderBackdrop loading={loading} />}
-      <FlexBox rwd={false}>
-        <InputDate
-          tab={tab}
-          dateValue={dateValue}
-          setDateValue={(v) =>
-            dispatch(setDateValueYear(dayjs(v).format("YYYY0101")))
-          }
-        />
-        <InputRegion
-          region={region}
-          setRegion={(v) => dispatch(setRegionValueYear(v))}
-        />
-        {region !== "" ? (
+      <Box
+        sx={{
+          display: is720Up ? "flex" : "block",
+          alignItems: "center",
+          margin: 2,
+          gap: 2,
+          "& > *:not(:last-child)": {
+            width: is720Up ? null : "100%",
+            marginBottom: is720Up ? 0 : 2,
+          },
+        }}
+      >
+        <Box sx={{ display: "flex", width: "100%" }}>
+          <InputDate
+            tab={tab}
+            dateValue={dateValue}
+            setDateValue={(v) =>
+              dispatch(setDateValueYear(dayjs(v).format("YYYY0101")))
+            }
+          />
+          <InputRegion
+            region={region}
+            setRegion={(v) => dispatch(setRegionValueYear(v))}
+          />
+        </Box>
+        {region !== "" && dateValue.isValid() ? (
           <Button variant="contained" onClick={handleAdd}>
             선택
           </Button>
@@ -113,7 +128,7 @@ export default function Year({ tab }: { tab: string }) {
           </Button>
         )}
         <DataTypeSelector tab={tab} dataType={dataType} />
-      </FlexBox>
+      </Box>
       {selectedYear.length > 0 ? (
         <>
           <DataChips
@@ -128,10 +143,17 @@ export default function Year({ tab }: { tab: string }) {
             dataLabel={dataLabel}
             setDataLabel={() => dispatch(setDataLabelYear())}
           />
-          <FlexBox rwd={true}>
+          <Box
+            sx={{
+              display: { xs: "block", sm: "flex" },
+              alignItems: "center",
+              margin: 2,
+              gap: 2,
+            }}
+          >
             <DonutTa selectedData={selectedYear} />
             <DonutRhm selectedData={selectedYear} />
-          </FlexBox>
+          </Box>
         </>
       ) : (
         <EmptyContainer />

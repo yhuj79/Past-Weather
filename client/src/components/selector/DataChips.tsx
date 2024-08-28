@@ -1,10 +1,10 @@
 import dayjs from "dayjs";
 
-import FlexBox from "components/common/FlexBox";
 import regionData from "constants/regionData.json";
 import { chartColorsLine } from "constants/chartColors";
 import { SelectedData } from "types/data";
 
+import { Box } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
 import CircleIcon from "@mui/icons-material/Circle";
@@ -19,7 +19,14 @@ export default function DataChips({
   handleRemove: (startDate: string, endDate: string, region: string) => void;
 }) {
   return (
-    <FlexBox rwd={false}>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        margin: 2,
+        gap: 2,
+      }}
+    >
       <Stack direction="row" spacing={1} useFlexGap flexWrap="wrap">
         {selectedData.map(({ startDate, endDate, region }, index) => (
           <Chip
@@ -39,6 +46,6 @@ export default function DataChips({
           />
         ))}
       </Stack>
-    </FlexBox>
+    </Box>
   );
 }

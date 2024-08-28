@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { MouseEvent } from "react";
 
 import { dateProp } from "types/input";
 
@@ -10,11 +11,25 @@ export default function InputDate({ tab, dateValue, setDateValue }: dateProp) {
   const minDate = dayjs("1920-01-01");
   const maxDate = dayjs().subtract(1, "day");
 
+  const handleMouseDown = (event: MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
+  };
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
       <DatePicker
-        sx={{ width: 150 }}
-        slotProps={{ textField: { size: "small" } }}
+        sx={{ width: "100%", marginRight: 2 }}
+        slotProps={{
+          textField: {
+            size: "small",
+            error: dateValue === null,
+            inputProps: {
+              readOnly: true,
+              style: { cursor: "default", fontSize: "14px" },
+            },
+            onMouseDown: handleMouseDown,
+          },
+        }}
         label={"날짜"}
         views={tab === "month" ? ["year", "month"] : ["year"]}
         format={tab === "month" ? "YYYY년 MM월" : "YYYY년"}

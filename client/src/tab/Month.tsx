@@ -13,7 +13,6 @@ import {
 } from "store";
 
 import LoaderBackdrop from "components/common/LoaderBackdrop";
-import FlexBox from "components/common/FlexBox";
 import EmptyContainer from "components/common/EmptyContainer";
 import DataTypeSelector from "components/selector/DataTypeSelector";
 import DataChips from "components/selector/DataChips";
@@ -26,9 +25,12 @@ import { fetchData } from "utils/fetchData";
 import { formatMonthData } from "utils/generateData";
 import { checkDuplicate } from "utils/checkDuplicate";
 
+import { useMediaQuery } from "@mui/material";
+import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
 
 export default function Month({ tab }: { tab: string }) {
+  const is720Up = useMediaQuery("(min-width:720px)");
   const dispatch: AppDispatch = useDispatch();
   const {
     selectedMonth,
@@ -90,19 +92,32 @@ export default function Month({ tab }: { tab: string }) {
   return (
     <>
       {loading && <LoaderBackdrop loading={loading} />}
-      <FlexBox rwd={false}>
-        <InputDate
-          tab={tab}
-          dateValue={dateValue}
-          setDateValue={(v) =>
-            dispatch(setDateValueMonth(dayjs(v).format("YYYYMM01")))
-          }
-        />
-        <InputRegion
-          region={region}
-          setRegion={(v) => dispatch(setRegionValueMonth(v))}
-        />
-        {region !== "" ? (
+      <Box
+        sx={{
+          display: is720Up ? "flex" : "block",
+          alignItems: "center",
+          margin: 2,
+          gap: 2,
+          "& > *:not(:last-child)": {
+            width: is720Up ? null : "100%",
+            marginBottom: is720Up ? 0 : 2,
+          },
+        }}
+      >
+        <Box sx={{ display: "flex", width: "100%" }}>
+          <InputDate
+            tab={tab}
+            dateValue={dateValue}
+            setDateValue={(v) =>
+              dispatch(setDateValueMonth(dayjs(v).format("YYYYMM01")))
+            }
+          />
+          <InputRegion
+            region={region}
+            setRegion={(v) => dispatch(setRegionValueMonth(v))}
+          />
+        </Box>
+        {region !== "" && dateValue.isValid() ? (
           <Button variant="contained" onClick={handleAdd}>
             선택
           </Button>
@@ -112,7 +127,7 @@ export default function Month({ tab }: { tab: string }) {
           </Button>
         )}
         <DataTypeSelector tab={tab} dataType={dataType} />
-      </FlexBox>
+      </Box>
       {selectedMonth.length > 0 ? (
         <>
           <DataChips
@@ -127,10 +142,17 @@ export default function Month({ tab }: { tab: string }) {
             dataLabel={dataLabel}
             setDataLabel={() => dispatch(setDataLabelMonth())}
           />
-          <FlexBox rwd={true}>
+          <Box
+            sx={{
+              display: { xs: "block", sm: "flex" },
+              alignItems: "center",
+              margin: 2,
+              gap: 2,
+            }}
+          >
             <DonutTa selectedData={selectedMonth} />
             <DonutRhm selectedData={selectedMonth} />
-          </FlexBox>
+          </Box>
         </>
       ) : (
         <EmptyContainer />

@@ -9,16 +9,16 @@ export const chartOptions: ApexOptions = {
     type: "donut",
   },
   labels: [
-    "-10°C 이하",
-    "-10 ~ -5°C",
-    "-5 ~ 0°C",
-    "0 ~ 5°C",
-    "5 ~ 10°C",
-    "10 ~ 15°C",
-    "15 ~ 20°C",
-    "20 ~ 25°C",
-    "25 ~ 30°C",
-    "30°C 이상",
+    "-10 이하",
+    "-10 ~ -5",
+    "-5 ~ 0",
+    "0 ~ 5",
+    "5 ~ 10",
+    "10 ~ 15",
+    "15 ~ 20",
+    "20 ~ 25",
+    "25 ~ 30",
+    "30 이상",
   ],
   plotOptions: {
     pie: {
@@ -31,7 +31,7 @@ export const chartOptions: ApexOptions = {
             label: "평균 기온",
             fontFamily: "Noto Sans KR, sans-serif",
             fontWeight: "400",
-            fontSize: "1.2rem",
+            fontSize: "1.1rem",
             formatter(w) {
               return (
                 w.globals.seriesTotals.reduce(
@@ -44,7 +44,7 @@ export const chartOptions: ApexOptions = {
           value: {
             fontFamily: "Noto Sans KR, sans-serif",
             fontWeight: "400",
-            fontSize: "1.2rem",
+            fontSize: "1.1rem",
             formatter(val) {
               return val + " data";
             },
@@ -58,10 +58,10 @@ export const chartOptions: ApexOptions = {
   },
   grid: {
     padding: {
-      top: 10,
-      bottom: 8,
-      left: 8,
-      right: 8,
+      top: 15,
+      bottom: 12,
+      left: 12,
+      right: 12,
     },
   },
   dataLabels: {
@@ -74,6 +74,7 @@ export const chartOptions: ApexOptions = {
   },
   legend: {
     show: true,
+    width: 60,
     offsetY: -12,
     itemMargin: {
       horizontal: 0,

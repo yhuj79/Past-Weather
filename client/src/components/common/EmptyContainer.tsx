@@ -10,11 +10,11 @@ export default function EmptyContainer() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: 500,
+        height: "55vh",
       }}
     >
       <Box textAlign="center">
-        <AllInboxIcon color="primary" sx={{ fontSize: 50 }} />
+        <AllInboxIcon color="primary" sx={{ fontSize: 40 }} />
         <Typography sx={{ marginY: 1 }} variant="h5">
           데이터가 없습니다.
         </Typography>
