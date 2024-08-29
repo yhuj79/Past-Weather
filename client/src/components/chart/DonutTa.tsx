@@ -12,7 +12,7 @@ export default function DonutTa({
 }) {
   const calculateAvgTaDist = (selectedData: SelectedData[]): number[] => {
     const count = new Array<number>(10).fill(0);
-    const ranges = [-10, -5, 0, 5, 10, 15, 20, 25, 30];
+    const ranges: number[] = [-10, -5, 0, 5, 10, 15, 20, 25, 30];
 
     selectedData.forEach((v) => {
       v.data.forEach((m) => {
@@ -27,11 +27,16 @@ export default function DonutTa({
     return count;
   };
 
-  const series = calculateAvgTaDist(selectedData);
+  const chartData = calculateAvgTaDist(selectedData);
 
   return (
     <Paper sx={{ width: "100%", marginBottom: 2 }} elevation={3}>
-      <Chart options={chartOptions} series={series} type="donut" height={300} />
+      <Chart
+        type="donut"
+        options={chartOptions}
+        series={chartData}
+        height={300}
+      />
     </Paper>
   );
 }

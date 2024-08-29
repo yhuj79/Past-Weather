@@ -27,8 +27,6 @@ export interface ChartDataState {
       avgWs: number | null;
     }[];
   }[];
-  // avgTaDistMonth: number[];
-  // avgTaDistYear: number[];
   dataTypeMonth: string;
   dataTypeYear: string;
   dateValueMonth: string;

@@ -7,13 +7,16 @@ export const getChartOptions = (
   dataLabels: boolean,
   tickAmount: number
 ): ApexOptions => {
+  // User-Agent를 통해 디바이스 유형 감지
+  const userAgent = navigator.userAgent.toLowerCase();
+  const isDesktop = !/mobile|tablet|ipad|ipod|android|silk|kindle|playbook|bb|rim/i.test(userAgent);
   return {
     chart: {
       type: "line",
       toolbar: {
         show: true,
         tools: {
-          zoom: true,
+          zoom: isDesktop,
           zoomin: true,
           zoomout: true,
           download: true,
@@ -33,6 +36,7 @@ export const getChartOptions = (
       tickAmount: tickAmount,
       labels: {
         show: true,
+        rotate: 0,
         formatter: function (value) {
           return parseInt(value).toString() + (type === "month" ? "일" : "월");
         },
@@ -40,6 +44,7 @@ export const getChartOptions = (
     },
     legend: {
       show: false,
+      position: "top",
     },
     tooltip: {
       enabled: true,

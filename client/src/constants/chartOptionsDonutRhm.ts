@@ -74,7 +74,7 @@ export const chartOptions: ApexOptions = {
   },
   legend: {
     show: true,
-    width: 60,
+    width: 65,
     offsetY: -12,
     itemMargin: {
       horizontal: 0,

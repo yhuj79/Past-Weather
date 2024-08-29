@@ -72,7 +72,7 @@ export const formatMonthData = (data: VanillaData[]) => {
       avgTa: item.avgTa !== "" ? parseFloat(item.avgTa) : null,
       maxTa: item.maxTa !== "" ? parseFloat(item.maxTa) : null,
       minTa: item.minTa !== "" ? parseFloat(item.minTa) : null,
-      avgRhm: item.minTa !== "" ? parseFloat(item.avgRhm) : null,
+      avgRhm: item.avgRhm !== "" ? parseFloat(item.avgRhm) : null,
       sumRn: item.sumRn !== "" ? parseFloat(item.sumRn) : null,
       avgWs: item.avgWs !== "" ? parseFloat(item.avgWs) : null,
     };

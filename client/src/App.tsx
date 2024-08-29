@@ -20,7 +20,7 @@ const theme = createTheme({
 });
 
 export default function App() {
-  const is1080Up = useMediaQuery("(min-width:1080px)");
+  const is1160Up = useMediaQuery("(min-width:1160px)");
   const [tab, setTab] = useState<string>("month");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -35,7 +35,7 @@ export default function App() {
           <Grid container sx={{ height: "calc(100% - 64px)" }}>
             <Grid
               item
-              xs={is1080Up ? 8 : 12}
+              xs={is1160Up ? 8 : 12}
               sx={{ height: "100%", overflow: "auto" }}
             >
               <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -57,7 +57,7 @@ export default function App() {
                 <Year tab={tab} />
               </TabPanel>
             </Grid>
-            {is1080Up ? (
+            {is1160Up ? (
               <Grid item xs={4} sx={{ border: 1, borderColor: "divider" }}>
                 <Map tab={tab} />
               </Grid>

@@ -25,12 +25,12 @@ import { fetchData } from "utils/fetchData";
 import { formatYearData } from "utils/generateData";
 import { checkDuplicate } from "utils/checkDuplicate";
 
-import { useMediaQuery } from "@mui/material";
+import { Alert, useMediaQuery } from "@mui/material";
 import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
 
 export default function Year({ tab }: { tab: string }) {
-  const is720Up = useMediaQuery("(min-width:720px)");
+  const is775Up = useMediaQuery("(min-width:775px)");
   const dispatch: AppDispatch = useDispatch();
   const {
     selectedYear,
@@ -43,6 +43,8 @@ export default function Year({ tab }: { tab: string }) {
   const [loading, setLoading] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
+  const [alertDuplicate, setAlertDuplicate] = useState<boolean>(false);
+  const [alertFailed, setAlertFailed] = useState<boolean>(false);
 
   const dateValue = dayjs(dateValueYear);
   useEffect(() => {
@@ -60,10 +62,12 @@ export default function Year({ tab }: { tab: string }) {
 
   const handleAdd = async () => {
     if (checkDuplicate(selectedYear, startDate, endDate, region)) {
-      console.log("중복된 데이터입니다.");
+      setAlertDuplicate(true);
       return;
     }
     setLoading(true);
+    setAlertDuplicate(false);
+    setAlertFailed(false);
 
     try {
       const items = await fetchData(startDate, endDate, region);
@@ -79,7 +83,7 @@ export default function Year({ tab }: { tab: string }) {
           })
         );
       } else {
-        console.log("데이터를 가져오지 못했습니다.");
+        setAlertFailed(true);
       }
     } finally {
       setLoading(false);
@@ -93,15 +97,25 @@ export default function Year({ tab }: { tab: string }) {
   return (
     <>
       {loading && <LoaderBackdrop loading={loading} />}
+      {alertDuplicate && (
+        <Alert severity="warning" onClose={() => setAlertDuplicate(false)}>
+          중복된 데이터입니다.
+        </Alert>
+      )}
+      {alertFailed && (
+        <Alert severity="error" onClose={() => setAlertFailed(false)}>
+          데이터 로딩에 실패했습니다.
+        </Alert>
+      )}
       <Box
         sx={{
-          display: is720Up ? "flex" : "block",
+          display: is775Up ? "flex" : "block",
           alignItems: "center",
           margin: 2,
           gap: 2,
           "& > *:not(:last-child)": {
-            width: is720Up ? null : "100%",
-            marginBottom: is720Up ? 0 : 2,
+            width: is775Up ? null : "100%",
+            marginBottom: is775Up ? 0 : 2,
           },
         }}
       >
@@ -118,15 +132,14 @@ export default function Year({ tab }: { tab: string }) {
             setRegion={(v) => dispatch(setRegionValueYear(v))}
           />
         </Box>
-        {region !== "" && dateValue.isValid() ? (
-          <Button variant="contained" onClick={handleAdd}>
-            선택
-          </Button>
-        ) : (
-          <Button variant="contained" disabled>
-            선택
-          </Button>
-        )}
+        <Button
+          sx={{ width: "200px" }}
+          variant="contained"
+          onClick={handleAdd}
+          disabled={!(region !== "" && dateValue.isValid())}
+        >
+          선택
+        </Button>
         <DataTypeSelector tab={tab} dataType={dataType} />
       </Box>
       {selectedYear.length > 0 ? (
@@ -145,7 +158,7 @@ export default function Year({ tab }: { tab: string }) {
           />
           <Box
             sx={{
-              display: is720Up ? "flex" : "block",
+              display: is775Up ? "flex" : "block",
               alignItems: "center",
               margin: 2,
               gap: 2,
