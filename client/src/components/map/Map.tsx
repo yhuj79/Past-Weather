@@ -1,15 +1,20 @@
 import { useMemo } from "react";
+import { createPortal } from "react-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import L from "leaflet";
+import { useMap } from "react-leaflet";
 
 import regionData from "constants/regionData.json";
+
+import { Fab, useMediaQuery } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 L.Icon.Default.mergeOptions({
   iconUrl: markerIcon,
@@ -17,12 +22,47 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-export default function Map({ tab }: { tab: string }) {
+const position: L.LatLngExpression = [35.97, 127.83];
+const bounds = L.latLngBounds(
+  [32.5, 123.5], // 남서 좌표 (예시: 제주 남서쪽)
+  [39.0, 132.0] // 북동 좌표 (예시: 강원도 북동쪽)
+);
+
+const MapButton = ({ modal }: { modal: () => void }) => {
+  const map = useMap();
+
+  return createPortal(
+    <Fab
+      style={{
+        position: "absolute",
+        top: "-7px",
+        right: "-7px",
+        transform: "scale(0.4)",
+        zIndex: 1000,
+      }}
+    >
+      <CloseIcon
+        fontSize="small"
+        style={{ transform: "scale(2)" }}
+        onClick={modal}
+      />
+    </Fab>,
+    map.getContainer()
+  );
+};
+
+export default function Map({
+  tab,
+  modal,
+}: {
+  tab: string;
+  modal?: () => void;
+}) {
+  const is1160Up = useMediaQuery("(min-width:1160px)");
+
   const { selectedMonth, selectedYear } = useSelector(
     (state: RootState) => state.chartData
   );
-
-  const position: L.LatLngExpression = [36.2, 127.8];
 
   const markers = useMemo(() => {
     const dataToDisplay = tab === "month" ? selectedMonth : selectedYear;
@@ -33,13 +73,24 @@ export default function Map({ tab }: { tab: string }) {
     return uniqueRegionIds.map((regionId) => {
       const regionInfo = regionData.find((region) => region.id === regionId);
       if (regionInfo) {
+        const customIcon = L.divIcon({
+          className: "custom-marker",
+          html: `
+          <div style="position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; transform: translateY(-90%);">
+              <div style="white-space: nowrap; font-family: 'Noto Sans KR', sans-serif; font-size: 15px; font-weight: bold; color: #000; text-shadow: -1px -1px 0 #FFF, 1px -1px 0 #FFF, -1px 1px 0 #FFF, 1px 1px 0 #FFF;">
+                  ${regionInfo.name}
+              </div>
+              <img src="${markerIcon}" style="width: 25px; height: 41px;"/>
+          </div>
+          `,
+        });
+
         return (
           <Marker
             key={regionInfo.id}
             position={[regionInfo.latitude, regionInfo.longitude]}
-          >
-            <Popup>{regionInfo.name}</Popup>
-          </Marker>
+            icon={customIcon}
+          />
         );
       }
       return null;
@@ -49,14 +100,23 @@ export default function Map({ tab }: { tab: string }) {
   return (
     <MapContainer
       center={position}
-      zoom={7}
-      style={{ height: "100%", width: "100%" }}
+      zoom={modal ? 7.0 : 7.5}
+      zoomSnap={0.5}
+      maxBounds={bounds}
+      maxBoundsViscosity={1.0}
+      style={{
+        height: "100%",
+        width: "100%",
+        borderRadius: is1160Up ? "" : "10px",
+      }}
     >
       <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
+        maxZoom={10}
+        minZoom={modal ? 7.0 : 7.5}
       />
       {markers}
+      {modal && <MapButton modal={modal} />}
     </MapContainer>
   );
 }
