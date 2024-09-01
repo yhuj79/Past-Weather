@@ -15,7 +15,7 @@ export default function InputDate({
   setDateValue: (value: Dayjs | null) => void;
 }) {
   const minDate = dayjs("1920-01-01");
-  const maxDate = dayjs().subtract(1, "day");
+  const maxDate = dayjs().subtract(2, "day");
 
   const handleMouseDown = (event: MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
