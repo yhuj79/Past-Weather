@@ -162,6 +162,9 @@ export default function Month({ tab }: { tab: string }) {
               alignItems: "center",
               margin: 2,
               gap: 2,
+              "& > *:not(:last-child)": {
+                marginBottom: is775Up ? 0 : 2,
+              },
             }}
           >
             <DonutTa selectedData={selectedMonth} />

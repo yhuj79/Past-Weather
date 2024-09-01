@@ -30,7 +30,7 @@ export default function DonutTa({
   const chartData = calculateAvgTaDist(selectedData);
 
   return (
-    <Paper sx={{ width: "100%", marginBottom: 2 }} elevation={3}>
+    <Paper sx={{ width: "100%" }} elevation={3}>
       <Chart
         type="donut"
         options={chartOptions}
