@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import { createPortal } from "react-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 
@@ -9,12 +8,11 @@ import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import L from "leaflet";
-import { useMap } from "react-leaflet";
 
+import CloseButton from "components/map/CloseButton";
 import regionData from "constants/regionData.json";
 
-import { Fab, useMediaQuery } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+import { useMediaQuery } from "@mui/material";
 
 L.Icon.Default.mergeOptions({
   iconUrl: markerIcon,
@@ -27,29 +25,6 @@ const bounds = L.latLngBounds(
   [32.5, 123.5], // 남서 좌표 (예시: 제주 남서쪽)
   [39.0, 132.0] // 북동 좌표 (예시: 강원도 북동쪽)
 );
-
-const MapButton = ({ modal }: { modal: () => void }) => {
-  const map = useMap();
-
-  return createPortal(
-    <Fab
-      style={{
-        position: "absolute",
-        top: "-7px",
-        right: "-7px",
-        transform: "scale(0.4)",
-        zIndex: 1000,
-      }}
-    >
-      <CloseIcon
-        fontSize="small"
-        style={{ transform: "scale(2)" }}
-        onClick={modal}
-      />
-    </Fab>,
-    map.getContainer()
-  );
-};
 
 export default function Map({
   tab,
@@ -116,7 +91,7 @@ export default function Map({
         minZoom={modal ? 7.0 : 7.5}
       />
       {markers}
-      {modal && <MapButton modal={modal} />}
+      {modal && <CloseButton modal={modal} />}
     </MapContainer>
   );
 }

@@ -1,5 +1,3 @@
-import { dataLabelProp } from "types/input";
-
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Switch from "@mui/material/Switch";
@@ -53,7 +51,10 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
 export default function DataLabelToggle({
   dataLabel,
   setDataLabel,
-}: dataLabelProp) {
+}: {
+  dataLabel: boolean;
+  setDataLabel: () => void;
+}) {
   return (
     <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
       <Box sx={{ paddingTop: "2.5px" }}>

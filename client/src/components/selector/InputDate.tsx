@@ -1,13 +1,19 @@
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { MouseEvent } from "react";
-
-import { dateProp } from "types/input";
 
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-export default function InputDate({ tab, dateValue, setDateValue }: dateProp) {
+export default function InputDate({
+  tab,
+  dateValue,
+  setDateValue,
+}: {
+  tab: string;
+  dateValue: Dayjs | null;
+  setDateValue: (value: Dayjs | null) => void;
+}) {
   const minDate = dayjs("1920-01-01");
   const maxDate = dayjs().subtract(1, "day");
 

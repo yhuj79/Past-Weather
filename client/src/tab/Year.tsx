@@ -21,7 +21,8 @@ import InputRegion from "components/selector/InputRegion";
 import Line from "components/chart/Line";
 import DonutTa from "components/chart/DonutTa";
 import DonutRhm from "components/chart/DonutRhm";
-import { fetchData } from "utils/fetchData";
+import Forecast from "components/forecast/Forecast";
+import { fetchChartData } from "utils/fetchData";
 import { formatYearData } from "utils/generateData";
 import { checkDuplicate } from "utils/checkDuplicate";
 
@@ -70,7 +71,7 @@ export default function Year({ tab }: { tab: string }) {
     setAlertFailed(false);
 
     try {
-      const items = await fetchData(startDate, endDate, region);
+      const items = await fetchChartData(startDate, endDate, region);
       if (items) {
         const year = dayjs(startDate).year();
         const formattedData = formatYearData(items, year);
@@ -167,6 +168,7 @@ export default function Year({ tab }: { tab: string }) {
             <DonutTa selectedData={selectedYear} />
             <DonutRhm selectedData={selectedYear} />
           </Box>
+          <Forecast selectedData={selectedYear} />
         </>
       ) : (
         <EmptyContainer />

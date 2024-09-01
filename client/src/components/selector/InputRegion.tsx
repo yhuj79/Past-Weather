@@ -1,12 +1,17 @@
 import regionData from "constants/regionData.json";
-import { regionProp } from "types/input";
 
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
-export default function InputRegion({ region, setRegion }: regionProp) {
+export default function InputRegion({
+  region,
+  setRegion,
+}: {
+  region: string;
+  setRegion: (value: string) => void;
+}) {
   return (
     <FormControl sx={{ width: "100%" }} size="small">
       <InputLabel sx={{ fontSize: 14 }} id="label-Region">
