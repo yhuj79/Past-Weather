@@ -6,14 +6,16 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
 export default function InputRegion({
+  width,
   region,
   setRegion,
 }: {
+  width: string;
   region: string;
   setRegion: (value: string) => void;
 }) {
   return (
-    <FormControl sx={{ width: "100%" }} size="small">
+    <FormControl sx={{ width: width }} size="small">
       <InputLabel sx={{ fontSize: 14 }} id="label-Region">
         지역
       </InputLabel>

@@ -1,22 +1,13 @@
 import { useState, useEffect } from "react";
 
+import InputRegion from "components/selector/InputRegion";
 import DayCard from "components/forecast/DayCard";
 import regionData from "constants/regionData.json";
 import { fetchForecastData } from "utils/fetchData";
 import { SelectedData } from "types/data";
 import { ForecastData } from "types/forecast";
 
-import {
-  Box,
-  Typography,
-  Paper,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  CircularProgress,
-  Fade,
-} from "@mui/material";
+import { Box, Typography, Paper, CircularProgress, Fade } from "@mui/material";
 
 export default function Forecast({
   selectedData,
@@ -66,40 +57,14 @@ export default function Forecast({
               }}
             >
               <Typography variant="h5">주간 예보</Typography>
-              <FormControl sx={{ width: "120px" }} size="small">
-                <InputLabel sx={{ fontSize: 14 }} id="label-forecast">
-                  지역
-                </InputLabel>
-                <Select
-                  labelId="label-forecast"
-                  id="label-forecast"
-                  value={currentRegion}
-                  label="Forecast"
-                  sx={{ fontSize: 14 }}
-                  MenuProps={{ style: { maxHeight: 360 } }}
-                  onChange={(e) => setCurrentRegion(e.target.value)}
-                >
-                  {regionData.map((m) => (
-                    <MenuItem key={m.id} value={m.id}>
-                      {m.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+              <InputRegion
+                width={"120px"}
+                region={currentRegion}
+                setRegion={(e) => setCurrentRegion(e)}
+              />
             </Box>
             <Fade in={!isLoading}>
-              {isLoading ? (
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "100px",
-                  }}
-                >
-                  <CircularProgress />
-                </Box>
-              ) : (
+              {!isLoading ? (
                 <Box
                   sx={{
                     display: "flex",
@@ -111,6 +76,17 @@ export default function Forecast({
                   {forecastData.map((day, index) => (
                     <DayCard data={day} key={index} />
                   ))}
+                </Box>
+              ) : (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100px",
+                  }}
+                >
+                  <CircularProgress />
                 </Box>
               )}
             </Fade>

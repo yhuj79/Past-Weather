@@ -2,17 +2,16 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "store";
 
+import CloseButton from "components/map/CloseButton";
+import regionData from "constants/regionData.json";
+
+import { useMediaQuery } from "@mui/material";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import L from "leaflet";
-
-import CloseButton from "components/map/CloseButton";
-import regionData from "constants/regionData.json";
-
-import { useMediaQuery } from "@mui/material";
 
 L.Icon.Default.mergeOptions({
   iconUrl: markerIcon,

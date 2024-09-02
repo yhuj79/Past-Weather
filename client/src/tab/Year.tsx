@@ -25,6 +25,7 @@ import Forecast from "components/forecast/Forecast";
 import { fetchChartData } from "utils/fetchData";
 import { formatYearData } from "utils/generateData";
 import { checkDuplicate } from "utils/checkDuplicate";
+import { rwdBoxStyle } from "styles/base";
 
 import { Alert, useMediaQuery } from "@mui/material";
 import { Box } from "@mui/material";
@@ -108,18 +109,7 @@ export default function Year({ tab }: { tab: string }) {
           데이터 로딩에 실패했습니다.
         </Alert>
       )}
-      <Box
-        sx={{
-          display: is775Up ? "flex" : "block",
-          alignItems: "center",
-          margin: 2,
-          gap: 2,
-          "& > *:not(:last-child)": {
-            width: is775Up ? null : "100%",
-            marginBottom: is775Up ? 0 : 2,
-          },
-        }}
-      >
+      <Box sx={rwdBoxStyle(is775Up)}>
         <Box sx={{ display: "flex", width: "100%" }}>
           <InputDate
             tab={tab}
@@ -129,12 +119,13 @@ export default function Year({ tab }: { tab: string }) {
             }
           />
           <InputRegion
+            width={"100%"}
             region={region}
             setRegion={(v) => dispatch(setRegionValueYear(v))}
           />
         </Box>
         <Button
-          sx={{ width: "200px" }}
+          sx={{ width: is775Up ? "200px" : "100%" }}
           variant="contained"
           onClick={handleAdd}
           disabled={!(region !== "" && dateValue.isValid())}
@@ -157,17 +148,7 @@ export default function Year({ tab }: { tab: string }) {
             dataLabel={dataLabel}
             setDataLabel={() => dispatch(setDataLabelYear())}
           />
-          <Box
-            sx={{
-              display: is775Up ? "flex" : "block",
-              alignItems: "center",
-              margin: 2,
-              gap: 2,
-              "& > *:not(:last-child)": {
-                marginBottom: is775Up ? 0 : 2,
-              },
-            }}
-          >
+          <Box sx={rwdBoxStyle(is775Up)}>
             <DonutTa selectedData={selectedYear} />
             <DonutRhm selectedData={selectedYear} />
           </Box>

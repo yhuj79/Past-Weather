@@ -4,28 +4,12 @@ import Chart from "react-apexcharts";
 
 import DataLabelToggle from "components/selector/DataLabelToggle";
 import { getChartOptions } from "constants/chartOptionsLine";
+import { dataTypeLabel, dataTypeUnit } from "constants/dataType";
 import { getDataSeries } from "utils/generateData";
 import { SelectedData } from "types/data";
 
 import { useMediaQuery, Typography, Box } from "@mui/material";
 import Paper from "@mui/material/Paper";
-
-const dataTypeLabel: { [key: string]: string } = {
-  avgTa: "평균 기온 ",
-  maxTa: "최고 기온 ",
-  minTa: "최저 기온 ",
-  avgRhm: "평균 습도 ",
-  sumRn: "강수량 ",
-  avgWs: "평균 풍속 ",
-};
-const dataTypeUnit: { [key: string]: string } = {
-  avgTa: "(°C)",
-  maxTa: "(°C)",
-  minTa: "(°C)",
-  avgRhm: "(%)",
-  sumRn: "(mm)",
-  avgWs: "(m/s)",
-};
 
 export default function Line({
   tab,
