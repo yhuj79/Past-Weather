@@ -5,7 +5,7 @@ import { Card, CardContent, Typography, CardMedia } from "@mui/material";
 // 주간 예보 일 카드 컴포넌트
 export default function DayCard({ data }: { data: ForecastData }) {
   return (
-    <Card variant="outlined" sx={{ minWidth: 120, flexGrow: 1 }}>
+    <Card variant="outlined" sx={{ maxWidth: "100%", flexGrow: 1 }}>
       <CardContent
         sx={{
           display: "flex",
@@ -14,12 +14,11 @@ export default function DayCard({ data }: { data: ForecastData }) {
           padding: "8px !important",
         }}
       >
-        <Typography variant="body1">
+        <Typography variant="body2" sx={{ fontSize: "14px" }}>
           {data.day}{" "}
           <Typography
-            variant="body2"
             component="span"
-            sx={{ color: "#6B6B6B" }}
+            sx={{ color: "#6B6B6B", fontSize: "12px" }}
           >
             {data.date}
           </Typography>
@@ -30,23 +29,20 @@ export default function DayCard({ data }: { data: ForecastData }) {
         />
         <Typography variant="body2">
           <Typography
-            variant="body2"
             component="span"
-            sx={{ color: "#3172E7", fontWeight: 600 }}
+            sx={{ color: "#3172E7", fontSize: "12px", fontWeight: 600 }}
           >
             {Math.round(data.minTemp)}°C
           </Typography>
           <Typography
-            variant="body2"
             component="span"
-            sx={{ color: "#999999" }}
+            sx={{ color: "#999999", fontSize: "12px" }}
           >
             {" / "}
           </Typography>
           <Typography
-            variant="body2"
             component="span"
-            sx={{ color: "#CD3534", fontWeight: 600 }}
+            sx={{ color: "#CD3534", fontSize: "12px", fontWeight: 600 }}
           >
             {Math.round(data.maxTemp)}°C
           </Typography>

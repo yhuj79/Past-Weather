@@ -2,25 +2,35 @@ import axios from "axios";
 
 import { VanillaData } from "types/data";
 
+// API KEY 목록
+const apiKeyList = [
+  process.env.REACT_APP_CHART_API_KEY_FIRST,
+  process.env.REACT_APP_CHART_API_KEY_SECOND,
+  process.env.REACT_APP_CHART_API_KEY_THIRD,
+];
+
 // 차트 데이터를 가져오는 함수
 export const fetchChartData = async (
   startDate: string,
   endDate: string,
   region: string,
-  retryCount = 0 // 재시도 횟수 (기본값: 0)
+  attempt = 0 // 시도 횟수
 ): Promise<VanillaData[] | null> => {
+  // 현재 시도에서 사용할 API KEY 선택
+  const index = attempt % apiKeyList.length;
+  const apiKey = apiKeyList[index];
   try {
     const res = await axios.get(
-      `https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${process.env.REACT_APP_CHART_API_KEY}&pageNo=1&numOfRows=999&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${startDate}&endDt=${endDate}&stnIds=${region}`,
+      `https://apis.data.go.kr/1360000/AsosDalyInfoService/getWthrDataList?serviceKey=${apiKey}&pageNo=1&numOfRows=999&dataType=JSON&dataCd=ASOS&dateCd=DAY&startDt=${startDate}&endDt=${endDate}&stnIds=${region}`,
       { timeout: 2000 } // 요청 타임아웃: 2초
     );
     const items: VanillaData[] = res.data.response.body.items?.item;
     return items;
   } catch (err) {
-    // 요청 실패 시 최대 5번까지 재시도
-    if (retryCount < 5) {
-      console.log(`Retry (${retryCount + 1}/5)`);
-      return fetchChartData(startDate, endDate, region, retryCount + 1);
+    // API KEY CYCLE 4회 시도
+    if (attempt < 11) {
+      // console.log(`Retry (${attempt + 1}/12) KEY ${index + 1}`);
+      return fetchChartData(startDate, endDate, region, attempt + 1);
     } else {
       let message;
       if (err instanceof Error) message = err.message;

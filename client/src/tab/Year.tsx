@@ -117,7 +117,7 @@ export default function Year({ tab }: { tab: string }) {
           데이터 로딩에 실패했습니다.
         </Alert>
       )}
-      <Box sx={rwdBoxStyle(is775Up)}>
+      <Box sx={{ ...rwdBoxStyle(is775Up), marginTop: 3 }}>
         <Box sx={{ display: "flex", width: "100%" }}>
           <InputDate
             tab={tab}

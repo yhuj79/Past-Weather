@@ -7,6 +7,7 @@ import { fetchForecastData } from "utils/fetchData";
 import { SelectedData } from "types/data";
 import { ForecastData } from "types/forecast";
 
+import { useMediaQuery } from "@mui/material";
 import { Box, Typography, Paper, CircularProgress, Fade } from "@mui/material";
 
 // 주간 예보 컴포넌트
@@ -15,6 +16,7 @@ export default function Forecast({
 }: {
   selectedData: SelectedData[];
 }) {
+  const is775Up = useMediaQuery("(min-width:775px)");
   const [currentRegion, setCurrentRegion] = useState<string>("");
   const [forecastData, setForecastData] = useState<ForecastData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -44,9 +46,24 @@ export default function Forecast({
     }
   }, [currentRegionInfo]);
 
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "600px",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
+
   return (
     <Paper
-      sx={{ height: "198px", margin: 2, padding: 2, paddingBottom: 1 }}
+      sx={{ margin: 2, padding: 2, paddingBottom: 1, marginBottom: 3 }}
       elevation={3}
     >
       <Box>
@@ -56,42 +73,40 @@ export default function Forecast({
               sx={{
                 display: "flex",
                 justifyContent: "space-between",
-                paddingBottom: 1,
+                paddingBottom: 2,
               }}
             >
               <Typography variant="h5">주간 예보</Typography>
               <InputRegion
-                width={"120px"}
+                width={"140px"}
                 region={currentRegion}
                 setRegion={(e) => setCurrentRegion(e)}
               />
             </Box>
             <Fade in={!isLoading}>
-              {!isLoading ? (
-                <Box
-                  sx={{
-                    display: "flex",
-                    gap: 2,
-                    paddingY: 1,
-                    overflowX: "auto",
-                  }}
-                >
-                  {forecastData.map((day, index) => (
-                    <DayCard data={day} key={index} />
-                  ))}
-                </Box>
-              ) : (
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "100px",
-                  }}
-                >
-                  <CircularProgress />
-                </Box>
-              )}
+              <Box
+                sx={
+                  is775Up
+                    ? {
+                        display: "flex",
+                        gap: 2,
+                        paddingBottom: 1,
+                      }
+                    : {
+                        display: "grid",
+                        gap: 2,
+                        gridTemplateColumns: "repeat(2, 1fr)",
+                        paddingBottom: 1,
+                        "& > :last-child": {
+                          gridColumn: "span 2",
+                        },
+                      }
+                }
+              >
+                {forecastData.map((day, index) => (
+                  <DayCard data={day} key={index} />
+                ))}
+              </Box>
             </Fade>
           </>
         )}
