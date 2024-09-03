@@ -4,6 +4,7 @@ import { useMap } from "react-leaflet";
 import CloseIcon from "@mui/icons-material/Close";
 import { Fab } from "@mui/material";
 
+// 지도 닫기 버튼 컴포넌트
 export default function CloseButton({ modal }: { modal: () => void }) {
   const map = useMap();
 

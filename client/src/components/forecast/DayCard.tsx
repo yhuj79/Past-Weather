@@ -2,6 +2,7 @@ import { ForecastData } from "types/forecast";
 
 import { Card, CardContent, Typography, CardMedia } from "@mui/material";
 
+// 주간 예보 일 카드 컴포넌트
 export default function DayCard({ data }: { data: ForecastData }) {
   return (
     <Card variant="outlined" sx={{ minWidth: 120, flexGrow: 1 }}>

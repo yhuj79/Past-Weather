@@ -1,3 +1,4 @@
+// Redux 스토어 ChartDataState 타입
 export interface ChartDataState {
   selectedMonth: {
     startDate: string;
@@ -37,6 +38,7 @@ export interface ChartDataState {
   dataLabelYear: boolean;
 }
 
+// 가공 전 원본 데이터 타입
 export interface VanillaData {
   tm: string;
   avgTa: string;
@@ -47,6 +49,7 @@ export interface VanillaData {
   avgWs: string;
 }
 
+// 차트 사용 가능하게 변환된 데이터 타입
 export interface GenerateData {
   x: string;
   avgTa: number | null;
@@ -57,6 +60,7 @@ export interface GenerateData {
   avgWs: number | null;
 }
 
+// 선택된 데이터 타입
 export interface SelectedData {
   startDate: string;
   endDate: string;

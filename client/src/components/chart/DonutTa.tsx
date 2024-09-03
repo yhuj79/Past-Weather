@@ -5,11 +5,13 @@ import { SelectedData } from "types/data";
 
 import { Paper } from "@mui/material";
 
+// 평균 기온 도넛 차트 컴포넌트
 export default function DonutTa({
   selectedData,
 }: {
   selectedData: SelectedData[];
 }) {
+  // 평균 기온의 구간을 나누어 도넛 차트용 데이터로 가공
   const calculateAvgTaDist = (selectedData: SelectedData[]): number[] => {
     const count = new Array<number>(10).fill(0);
     const ranges: number[] = [-10, -5, 0, 5, 10, 15, 20, 25, 30];

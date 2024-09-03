@@ -6,6 +6,7 @@ import { buttons } from "constants/dataType";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 
+// 데이터 유형 선택 컴포넌트
 export default function DataTypeSelector({
   tab,
   dataType,

@@ -1,9 +1,11 @@
+// 탭 화면 베이스 스타일
 export const tabStyle = {
   padding: 0,
   height: "calc(100% - 49px)",
   overflowY: "scroll",
 };
 
+// 지도 모달 베이스 스타일
 export const modalStyle = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -16,6 +18,7 @@ export const modalStyle = {
   boxShadow: 24,
 };
 
+// 반응형 박스 스타일
 export const rwdBoxStyle = (mediaQuery: boolean) => ({
   display: mediaQuery ? "flex" : "block",
   alignItems: "center",

@@ -5,6 +5,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
+// 날짜 선택 컴포넌트
 export default function InputDate({
   tab,
   dateValue,
@@ -14,6 +15,7 @@ export default function InputDate({
   dateValue: Dayjs | null;
   setDateValue: (value: Dayjs | null) => void;
 }) {
+  // x-date-pickers 범위를 1920년 ~ 2일 전으로 설정
   const minDate = dayjs("1920-01-01");
   const maxDate = dayjs().subtract(2, "day");
 

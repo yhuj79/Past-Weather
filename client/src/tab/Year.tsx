@@ -31,6 +31,7 @@ import { Alert, useMediaQuery } from "@mui/material";
 import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
 
+// 연도별 탭 컴포넌트
 export default function Year({ tab }: { tab: string }) {
   const is775Up = useMediaQuery("(min-width:775px)");
   const dispatch: AppDispatch = useDispatch();
@@ -48,12 +49,14 @@ export default function Year({ tab }: { tab: string }) {
   const [alertDuplicate, setAlertDuplicate] = useState<boolean>(false);
   const [alertFailed, setAlertFailed] = useState<boolean>(false);
 
+  // 선택한 연도에 따라 시작일과 종료일 설정 (1월1일~12월31일)
   const dateValue = dayjs(dateValueYear);
   useEffect(() => {
     if (dateValue) {
       setStartDate(dateValue.startOf("year").format("YYYYMMDD"));
       const today = dayjs();
 
+      // 이번 달일 경우 전일을 종료일로 설정
       if (dateValue.isSame(today, "year")) {
         setEndDate(today.subtract(1, "day").format("YYYYMMDD"));
       } else {
@@ -62,7 +65,9 @@ export default function Year({ tab }: { tab: string }) {
     }
   }, [dateValue]);
 
+  // 데이터 추가
   const handleAdd = async () => {
+    // 날짜-지역 중복일 경우 처리
     if (checkDuplicate(selectedYear, startDate, endDate, region)) {
       setAlertDuplicate(true);
       return;
@@ -74,8 +79,8 @@ export default function Year({ tab }: { tab: string }) {
     try {
       const items = await fetchChartData(startDate, endDate, region);
       if (items) {
-        const year = dayjs(startDate).year();
-        const formattedData = formatYearData(items, year);
+        // 기상 데이터를 라인 차트에 맞게 가공 후 상태 저장
+        const formattedData = formatYearData(items);
         dispatch(
           addYear({
             startDate,
@@ -92,10 +97,13 @@ export default function Year({ tab }: { tab: string }) {
     }
   };
 
+  // 데이터 제거
   const handleRemove = (startDate: string, endDate: string, region: string) => {
     dispatch(removeYear({ startDate, endDate, region }));
   };
 
+  // 상단에 날짜-지역 설정 및 선택 버튼, 데이터 유형 선택 버튼, 선택 데이터 목록
+  // 순서대로 라인, 도넛 차트, 주간 예보
   return (
     <>
       {loading && <LoaderBackdrop loading={loading} />}

@@ -1,3 +1,4 @@
+// 라인 차트 컬러 리스트
 export const chartColorsLine = [
   "#008FFB",
   "#00E396",
@@ -16,6 +17,7 @@ export const chartColorsLine = [
   "#F9A3A4",
 ];
 
+// 평균 기온 도넛 차트 컬러 리스트
 export const chartColorsDonutTa = [
   "#004080",
   "#0066CC",
@@ -29,6 +31,7 @@ export const chartColorsDonutTa = [
   "#FF5722",
 ];
 
+// 평균 습도 도넛 차트 컬러 리스트
 export const chartColorsDonutRhm = [
   "#CCFFFF",
   "#66FFFF",

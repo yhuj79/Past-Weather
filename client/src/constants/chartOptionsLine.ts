@@ -2,12 +2,13 @@ import { ApexOptions } from "apexcharts";
 
 import { chartColorsLine } from "constants/chartColors";
 
+// 라인 차트 옵션
 export const getChartOptions = (
   type: string,
   dataLabels: boolean,
   tickAmount: number
 ): ApexOptions => {
-  // User-Agent를 통해 디바이스 유형 감지
+  // User-Agent를 통해 디바이스 유형 감지, PC 화면에서만 줌 아이콘 설정
   const userAgent = navigator.userAgent.toLowerCase();
   const isDesktop = !/mobile|tablet|ipad|ipod|android|silk|kindle|playbook|bb|rim/i.test(userAgent);
   return {

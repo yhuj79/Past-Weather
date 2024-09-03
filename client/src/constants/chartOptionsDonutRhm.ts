@@ -2,6 +2,7 @@ import { ApexOptions } from "apexcharts";
 
 import { chartColorsDonutRhm } from "constants/chartColors";
 
+// 평균 습도 도넛 차트 옵션
 export const chartOptions: ApexOptions = {
   chart: {
     width: "100%",

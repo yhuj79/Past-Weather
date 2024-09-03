@@ -11,6 +11,7 @@ import { SelectedData } from "types/data";
 import { useMediaQuery, Typography, Box } from "@mui/material";
 import Paper from "@mui/material/Paper";
 
+// 라인 차트 컴포넌트
 export default function Line({
   tab,
   selectedData,
@@ -24,6 +25,7 @@ export default function Line({
   dataLabel: boolean;
   setDataLabel: () => void;
 }) {
+  // 화면 크기에 따라 x축 틱 개수 조정
   const is1160Up = useMediaQuery("(min-width:1160px)");
   const is775Up = useMediaQuery("(min-width:775px)");
   const tickAmount = useMemo(() => {
@@ -32,6 +34,7 @@ export default function Line({
     else return 4;
   }, [is1160Up, is775Up]);
 
+  // 데이터 레이블 표시 ON/OFF, 틱 개수 변화에 따라 차트 옵션이 재설정
   const chartOptions = useMemo(
     () =>
       getChartOptions(
@@ -42,6 +45,7 @@ export default function Line({
     [dataLabel, tickAmount]
   );
 
+  // 선택된 데이터, 그 유형에 따라 차트 데이터 재설정
   const chartData = useMemo(
     () =>
       getDataSeries(
@@ -52,10 +56,10 @@ export default function Line({
     [selectedData, dataType]
   );
 
-  // 라이브러리 문제 때문에 가로 길이 수동 설정
+  // 라이브러리 문제 때문에 가로 길이 수동적으로 설정
   const paperRef = useRef<HTMLDivElement>(null);
   const [chartWidth, setChartWidth] = useState<number | string>("100%");
-
+  // 컴포넌트가 렌더링될 때와 화면 크기 변화가 감지될 때 차트의 가로 길이를 업데이트
   useEffect(() => {
     const updateChartWidth = () => {
       if (paperRef.current) {
@@ -67,11 +71,13 @@ export default function Line({
     });
     const paperElement = paperRef.current;
     if (paperElement) {
+      // 요소의 크기 변화를 감시
       observer.observe(paperElement);
     }
     updateChartWidth();
     return () => {
       if (paperElement) {
+        // 컴포넌트가 언마운트될 때 감시 해제
         observer.unobserve(paperElement);
       }
     };

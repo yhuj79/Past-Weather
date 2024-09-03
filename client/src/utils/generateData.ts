@@ -3,16 +3,17 @@ import dayjs from "dayjs";
 import regionData from "constants/regionData.json";
 import { VanillaData, GenerateData, SelectedData } from "types/data";
 
-export const fillMonthGaps = (data: GenerateData[]) => {
+// 주어진 데이터의 빈 날짜 값을 채워주는 함수
+export const fillDataGaps = (data: GenerateData[], length: number) => {
   const filledData = [];
-  for (let i = 1; i <= 31; i++) {
-    const dayStr = String(i).padStart(2, "0");
-    const foundItem = data.find((item) => item.x === dayStr);
+  for (let i = 1; i <= length; i++) {
+    const dateStr = String(i).padStart(2, "0");
+    const foundItem = data.find((item) => item.x === dateStr);
     if (foundItem) {
       filledData.push(foundItem);
     } else {
       filledData.push({
-        x: dayStr,
+        x: dateStr,
         avgTa: null,
         maxTa: null,
         minTa: null,
@@ -25,48 +26,13 @@ export const fillMonthGaps = (data: GenerateData[]) => {
   return filledData;
 };
 
-export const fillYearGaps = (data: GenerateData[], year: number) => {
-  const filledData = [];
-  const currentMonth = new Date().getMonth() + 1;
-
-  for (let i = 1; i <= 12; i++) {
-    const monthStr = String(i).padStart(2, "0");
-    const foundItem = data.find((item) => item.x === monthStr);
-
-    if (foundItem) {
-      filledData.push(foundItem);
-    } else {
-      if (year === new Date().getFullYear() && i > currentMonth) {
-        filledData.push({
-          x: monthStr,
-          avgTa: null,
-          maxTa: null,
-          minTa: null,
-          avgRhm: null,
-          sumRn: null,
-          avgWs: null,
-        });
-      } else {
-        filledData.push({
-          x: monthStr,
-          avgTa: null,
-          maxTa: null,
-          minTa: null,
-          avgRhm: null,
-          sumRn: null,
-          avgWs: null,
-        });
-      }
-    }
-  }
-
-  return filledData;
-};
-
+// 월별 데이터 가공 함수
 export const formatMonthData = (data: VanillaData[]) => {
   const formatData = data.map((item) => {
     const date = new Date(item.tm);
     const x = String(date.getDate()).padStart(2, "0");
+
+    // 월별 데이터의 경우 다른 연산 과정 없이 바로 나열
     return {
       x,
       avgTa: item.avgTa !== "" ? parseFloat(item.avgTa) : null,
@@ -78,10 +44,12 @@ export const formatMonthData = (data: VanillaData[]) => {
     };
   });
 
-  return fillMonthGaps(formatData);
+  // 최종적으로 빈 날짜 값 채우기
+  return fillDataGaps(formatData, 31);
 };
 
-export const formatYearData = (data: VanillaData[], year: number) => {
+// 연도별 데이터 가공 함수
+export const formatYearData = (data: VanillaData[]) => {
   const monthlyData: {
     [key: string]: {
       avgTa: number[];
@@ -97,6 +65,7 @@ export const formatYearData = (data: VanillaData[], year: number) => {
     const date = new Date(item.tm);
     const x = String(date.getMonth() + 1).padStart(2, "0");
 
+    // 월별 데이터 계산 전 객체 초기화
     if (!monthlyData[x]) {
       monthlyData[x] = {
         avgTa: [],
@@ -107,7 +76,6 @@ export const formatYearData = (data: VanillaData[], year: number) => {
         avgWs: [],
       };
     }
-
     if (item.avgTa !== "") monthlyData[x].avgTa.push(parseFloat(item.avgTa));
     if (item.maxTa !== "") monthlyData[x].maxTa.push(parseFloat(item.maxTa));
     if (item.minTa !== "") monthlyData[x].minTa.push(parseFloat(item.minTa));
@@ -116,6 +84,9 @@ export const formatYearData = (data: VanillaData[], year: number) => {
     if (item.avgWs !== "") monthlyData[x].avgWs.push(parseFloat(item.avgWs));
   });
 
+  // 평균 기온(avgTa), 평균 습도(avgRhm)의 경우 데이터의 평균값 계산
+  // 최고, 최저 기온(maxTa, minTa)의 경우 각각 데이터의 최고, 최저값 계산
+  // 강수량(sumRn)의 경우 데이터 누적값 계산
   const formatData = Object.entries(monthlyData).map(([x, values]) => {
     const avg = (arr: number[]) =>
       parseFloat(
@@ -137,9 +108,11 @@ export const formatYearData = (data: VanillaData[], year: number) => {
     };
   });
 
-  return fillYearGaps(formatData, year);
+  // 최종적으로 빈 날짜 값 채우기
+  return fillDataGaps(formatData, 12);
 };
 
+// 주어진 데이터 유형에 따른 값을 반환하는 함수
 export const getItemValueByType = (
   item: GenerateData,
   type: string
@@ -162,6 +135,7 @@ export const getItemValueByType = (
   }
 };
 
+// 최종 라인 차트 데이터 생성 함수
 export const getDataSeries = (
   selectedData: SelectedData[],
   dataType: string,

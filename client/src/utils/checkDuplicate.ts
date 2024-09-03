@@ -1,5 +1,6 @@
 import { SelectedData } from "types/data";
 
+// 데이터 추가 전 중복 체크 함수
 export const checkDuplicate = (
   data: SelectedData[],
   startDate: string,

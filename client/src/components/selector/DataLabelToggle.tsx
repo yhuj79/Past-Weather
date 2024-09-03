@@ -4,6 +4,7 @@ import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
 import { Box } from "@mui/material";
 
+// 스위치 커스텀
 const AntSwitch = styled(Switch)(({ theme }) => ({
   width: 28,
   height: 16,
@@ -48,6 +49,7 @@ const AntSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
+// 데이터 레이블 표시 토글 컴포넌트
 export default function DataLabelToggle({
   dataLabel,
   setDataLabel,

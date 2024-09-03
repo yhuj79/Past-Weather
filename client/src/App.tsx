@@ -23,6 +23,8 @@ export default function App() {
   const [tab, setTab] = useState<string>("month");
   const [modal, setModal] = useState(false);
 
+  // 탭으로 월별(Month) 및 연도별(Year) 전환
+  // 큰 화면에서 지도(Map) 우측 고정, 작은 화면에서 모달(Modal) 사용
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ height: "100vh" }}>

@@ -9,22 +9,17 @@ import { useMediaQuery } from "@mui/material";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
-import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
-import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import L from "leaflet";
 
-L.Icon.Default.mergeOptions({
-  iconUrl: markerIcon,
-  iconRetinaUrl: markerIcon2x,
-  shadowUrl: markerShadow,
-});
-
+// 초기 중심 위치 설정
 const position: L.LatLngExpression = [35.97, 127.83];
+// 최대 경계 설정
 const bounds = L.latLngBounds(
-  [32.5, 123.5], // 남서 좌표 (예시: 제주 남서쪽)
-  [39.0, 132.0] // 북동 좌표 (예시: 강원도 북동쪽)
+  [32.5, 123.5], // 남서 좌표 (제주 남서쪽)
+  [39.0, 132.0] // 북동 좌표 (강원도 북동쪽)
 );
 
+// 지도 컴포넌트
 export default function Map({
   tab,
   modal,
@@ -32,18 +27,19 @@ export default function Map({
   tab: string;
   modal?: () => void;
 }) {
-  const is1160Up = useMediaQuery("(min-width:1160px)");
-
   const { selectedMonth, selectedYear } = useSelector(
     (state: RootState) => state.chartData
   );
+  const is1160Up = useMediaQuery("(min-width:1160px)");
 
+  // 지도에 표시할 마커 생성
   const markers = useMemo(() => {
     const dataToDisplay = tab === "month" ? selectedMonth : selectedYear;
+    // 중복을 제거한 지역 id 목록 생성
     const uniqueRegionIds = Array.from(
       new Set(dataToDisplay.map((data) => data.region))
     );
-
+    // 지역 id에 따른 마커 생성
     return uniqueRegionIds.map((regionId) => {
       const regionInfo = regionData.find((region) => region.id === regionId);
       if (regionInfo) {
@@ -58,7 +54,6 @@ export default function Map({
           </div>
           `,
         });
-
         return (
           <Marker
             key={regionInfo.id}
@@ -73,11 +68,11 @@ export default function Map({
 
   return (
     <MapContainer
-      center={position}
-      zoom={modal ? 7.0 : 7.5}
-      zoomSnap={0.5}
-      maxBounds={bounds}
-      maxBoundsViscosity={1.0}
+      center={position} // 초기 중심 좌표
+      zoom={modal ? 7.0 : 7.5} // 초기 줌 레벨
+      zoomSnap={0.5} // 줌 레벨 스냅
+      maxBounds={bounds} // 최대 경계 설정
+      maxBoundsViscosity={1.0} // 경계의 견고 정도 제어 (1.0일 경우 완전히 견고해져 경계 밖으로 드래그 불가)
       style={{
         height: "100%",
         width: "100%",
@@ -86,8 +81,8 @@ export default function Map({
     >
       <TileLayer
         url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
-        maxZoom={10}
-        minZoom={modal ? 7.0 : 7.5}
+        maxZoom={10} // 최대 줌 레벨
+        minZoom={modal ? 7.0 : 7.5} // 최소 줌 레벨
       />
       {markers}
       {modal && <CloseButton modal={modal} />}

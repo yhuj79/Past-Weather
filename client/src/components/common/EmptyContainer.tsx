@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import AllInboxIcon from "@mui/icons-material/AllInbox";
 import { Typography } from "@mui/material";
 
+// 선택된 데이터가 없을 경우 표시되는 컴포넌트
 export default function EmptyContainer() {
   return (
     <Container

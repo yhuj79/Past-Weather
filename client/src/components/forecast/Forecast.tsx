@@ -9,6 +9,7 @@ import { ForecastData } from "types/forecast";
 
 import { Box, Typography, Paper, CircularProgress, Fade } from "@mui/material";
 
+// 주간 예보 컴포넌트
 export default function Forecast({
   selectedData,
 }: {
@@ -18,10 +19,12 @@ export default function Forecast({
   const [forecastData, setForecastData] = useState<ForecastData[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  // regionData.json에서 현재 선택 지역 정보 획득
   const currentRegionInfo = regionData.find(
     (region) => region.id === currentRegion
   );
 
+  // 선택된 데이터 값이 변경될 때마다 마지막 선택 지역을 현재 지역으로 설정
   useEffect(() => {
     setCurrentRegion(selectedData[selectedData.length - 1]?.region);
   }, [selectedData]);

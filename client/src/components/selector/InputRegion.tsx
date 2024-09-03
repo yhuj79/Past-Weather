@@ -5,6 +5,7 @@ import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 
+// 지역 선택 컴포넌트
 export default function InputRegion({
   width,
   region,

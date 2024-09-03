@@ -2,6 +2,7 @@ import { ApexOptions } from "apexcharts";
 
 import { chartColorsDonutTa } from "constants/chartColors";
 
+// 평균 기온 도넛 차트 옵션
 export const chartOptions: ApexOptions = {
   chart: {
     width: "100%",
