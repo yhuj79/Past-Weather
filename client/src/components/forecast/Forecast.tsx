@@ -90,13 +90,13 @@ export default function Forecast({
                     ? {
                         display: "flex",
                         gap: 2,
-                        paddingBottom: 1,
+                        paddingBottom: 2,
                       }
                     : {
                         display: "grid",
                         gap: 2,
                         gridTemplateColumns: "repeat(2, 1fr)",
-                        paddingBottom: 1,
+                        paddingBottom: 2,
                         "& > :last-child": {
                           gridColumn: "span 2",
                         },

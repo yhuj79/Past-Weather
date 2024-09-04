@@ -69,6 +69,7 @@ export default function Year({ tab }: { tab: string }) {
   const handleAdd = async () => {
     // 날짜-지역 중복일 경우 처리
     if (checkDuplicate(selectedYear, startDate, endDate, region)) {
+      setAlertFailed(false);
       setAlertDuplicate(true);
       return;
     }

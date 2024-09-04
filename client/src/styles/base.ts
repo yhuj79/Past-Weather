@@ -5,8 +5,22 @@ export const tabStyle = {
   overflowY: "scroll",
 };
 
+// 기본 모달 베이스 스타일
+export const defaultModalStyle = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: "70%",
+  bgcolor: "background.paper",
+  border: "1px solid rgba(0, 0, 0, 0.12)",
+  borderRadius: "10px",
+  boxShadow: 24,
+  p: 3,
+};
+
 // 지도 모달 베이스 스타일
-export const modalStyle = {
+export const mapModalStyle = {
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",

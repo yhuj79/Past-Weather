@@ -7,7 +7,7 @@ import Header from "components/common/Header";
 import Map from "components/map/Map";
 import ModalButton from "components/map/ModalButton";
 import { theme } from "styles/theme";
-import { tabStyle, modalStyle } from "styles/base";
+import { tabStyle, mapModalStyle } from "styles/base";
 
 import { Grid, ThemeProvider, useMediaQuery } from "@mui/material";
 import Box from "@mui/material/Box";
@@ -21,7 +21,7 @@ import Fade from "@mui/material/Fade";
 export default function App() {
   const is1160Up = useMediaQuery("(min-width:1160px)");
   const [tab, setTab] = useState<string>("month");
-  const [modal, setModal] = useState(false);
+  const [modal, setModal] = useState<boolean>(false);
 
   // 탭으로 월별(Month) 및 연도별(Year) 전환
   // 큰 화면에서 지도(Map) 우측 고정, 작은 화면에서 모달(Modal) 사용
@@ -63,7 +63,7 @@ export default function App() {
             closeAfterTransition
           >
             <Fade in={modal}>
-              <Box sx={modalStyle}>
+              <Box sx={mapModalStyle}>
                 <Map tab={tab} modal={() => setModal(false)} />
               </Box>
             </Fade>
