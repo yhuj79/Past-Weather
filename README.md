@@ -2,7 +2,7 @@
 
 <img align=top src="https://raw.githubusercontent.com/yhuj79/Past-Weather/main/assets/thumbnail.png" width="600">
 
-과거 날씨 정보를 검색하고, 선택한 날씨 데이터들을 비교해볼 수 있는 사이트
+과거 기상 데이터 차트 분석 웹 서비스
 
 :ballot_box_with_check: <a target="_blank" rel="noopener noreferrer" href="https://past-weather.vercel.app">Past Weather</a>
 
@@ -37,7 +37,7 @@
 
 <br>
 
-- 월별, 연도별 선택하여 날씨 데이터 확인
+- 월별, 연도별 선택하여 기상 데이터 확인
 - [Apex Chart](https://apexcharts.com), [Leaflet](https://leafletjs.com) 사용
 
 <br>
@@ -48,9 +48,8 @@
 
 <br>
 
-- [날짜](https://github.com/yhuj79/Past-Weather/blob/main/client/src/components/selector/InputDate.tsx), [지역](https://github.com/yhuj79/Past-Weather/blob/main/client/src/components/selector/InputRegion.tsx), [데이터 타입](https://github.com/yhuj79/Past-Weather/blob/main/client/src/components/selector/DataTypeSelector.tsx) 설정
-- 데이터 타입에서 기온, 습도, 강수량, 풍속 설정
-- 선택한 데이터를 [라인 차트](https://github.com/yhuj79/Past-Weather/blob/main/client/src/components/chart/Line.tsx)로 표현 (월별/연도별)
+- [날짜](https://github.com/yhuj79/Past-Weather/blob/main/client/src/components/selector/InputDate.tsx), [지역](https://github.com/yhuj79/Past-Weather/blob/main/client/src/components/selector/InputRegion.tsx), [데이터 타입](https://github.com/yhuj79/Past-Weather/blob/main/client/src/components/selector/DataTypeSelector.tsx) (기온, 습도, 강수량 등) 설정
+- 선택한 데이터를 [라인 차트](https://github.com/yhuj79/Past-Weather/blob/main/client/src/components/chart/Line.tsx)로 시각화 (월별/연도별)
 - 데이터 레이블 표시 ON/OFF
 
 <br>
@@ -61,9 +60,9 @@
 
 <br>
 
-- 선택한 데이터가 상단에 [데이터칩](https://github.com/yhuj79/Past-Weather/blob/main/client/src/components/selector/DataChips.tsx) 형태로 출력 (우측 x 버튼으로 삭제 가능)
-- 추가, 삭제에 따라 차트는 동적으로 변화
-- 하단 [도넛 차트](https://github.com/yhuj79/Past-Weather/blob/main/client/src/components/chart/DonutTa.tsx)로 평균 기온, 습도 분포 표현
+- 선택한 데이터가 상단에 [데이터칩](https://github.com/yhuj79/Past-Weather/blob/main/client/src/components/selector/DataChips.tsx) 형태로 출력 (우측 x 버튼으로 삭제)
+- 추가, 삭제에 따라 동적으로 차트 변화
+- 하단 [도넛 차트](https://github.com/yhuj79/Past-Weather/blob/main/client/src/components/chart/DonutTa.tsx)로 평균 기온, 습도 분포 시각화
 
 <br>
 
@@ -73,7 +72,7 @@
 
 <br>
 
-- 선택한 지역의 [주간 예보](https://github.com/yhuj79/Past-Weather/blob/main/client/src/components/forecast/Forecast.tsx)를 출력
+- 선택한 지역을 기본값으로 [주간 예보](https://github.com/yhuj79/Past-Weather/blob/main/client/src/components/forecast/Forecast.tsx)를 출력
 - 다른 지역도 확인 가능
 
 <br>
