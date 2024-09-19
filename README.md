@@ -158,7 +158,7 @@
 ## Trouble Shooting
 
 - [Line Chart 화면 크기 변화 시 Width 문제](https://github.com/yhuj79/Past-Weather/wiki/%08Line-Chart-%ED%99%94%EB%A9%B4-%ED%81%AC%EA%B8%B0-%EB%B3%80%ED%99%94-%EC%8B%9C-Width-%EB%AC%B8%EC%A0%9C)
-- [API 응답 불량](https://github.com/yhuj79/Past-Weather/wiki/API-%EC%9D%91%EB%8B%B5-%EB%B6%88%EB%9F%89)
+- [API Http Routing Error](https://github.com/yhuj79/Past-Weather/wiki/API-Http-Routing-Error)
 - [렌더링 겹쳐짐 현상](https://github.com/yhuj79/Past-Weather/wiki/%EB%A0%8C%EB%8D%94%EB%A7%81-%EA%B2%B9%EC%B3%90%EC%A7%90-%ED%98%84%EC%83%81)
 
 ## Reference
