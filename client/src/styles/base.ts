@@ -12,6 +12,7 @@ export const defaultModalStyle = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "70%",
+  maxWidth: "650px",
   bgcolor: "background.paper",
   border: "1px solid rgba(0, 0, 0, 0.12)",
   borderRadius: "10px",

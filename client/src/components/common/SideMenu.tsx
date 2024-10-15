@@ -114,6 +114,13 @@ export default function SideMenu({
           text="케이웨더"
         />
       </List>
+      <Divider />
+      <List>
+        <FaviconListItem
+          url="https://github.com/yhuj79/Past-Weather"
+          text="Repository"
+        />
+      </List>
     </Box>
   );
 
