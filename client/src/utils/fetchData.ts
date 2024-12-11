@@ -48,7 +48,7 @@ export const fetchForecastData = async (
 ) => {
   try {
     const response = await axios.get(
-      `https://api.openweathermap.org/data/2.5/onecall?lat=${latitude}&lon=${longitude}&exclude=current,minutely,hourly,alerts&units=metric&lang=kr&appid=${process.env.REACT_APP_FORECAST_API_KEY}`
+      `https://api.openweathermap.org/data/3.0/onecall?lat=${latitude}&lon=${longitude}&exclude=current,minutely,hourly,alerts&units=metric&lang=kr&appid=${process.env.REACT_APP_FORECAST_API_KEY}`
     );
     return response.data.daily.slice(0, 7).map((day: any) => {
       const dateObj = new Date(day.dt * 1000); // 날짜 객체 변환
