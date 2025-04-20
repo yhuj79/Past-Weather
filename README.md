@@ -37,6 +37,7 @@
 
 <br>
 
+- [기상청_지상(종관, ASOS) 일자료 조회서비스](https://www.data.go.kr/data/15059093/openapi.do)
 - 월별, 연도별 선택하여 기상 데이터 확인
 - [Apex Chart](https://apexcharts.com), [Leaflet](https://leafletjs.com) 사용
 
@@ -72,6 +73,7 @@
 
 <br>
 
+- [OpenWeatherMap One Call API 3.0](https://openweathermap.org/api/one-call-3)
 - 선택한 지역을 기본값으로 [주간 예보](https://github.com/yhuj79/Past-Weather/blob/main/client/src/components/forecast/Forecast.tsx)를 출력
 - 다른 지역도 확인 가능
 
@@ -169,7 +171,7 @@
 
 [https://www.weather.go.kr/w/observation/land/past-obs/obs-by-day.do](https://www.weather.go.kr/w/observation/land/past-obs/obs-by-day.do)
 
-[https://openweathermap.org/api/one-call-api](https://openweathermap.org/api/one-call-api)
+[https://openweathermap.org/api/one-call-3](https://openweathermap.org/api/one-call-3)
 
 [https://apexcharts.com](https://apexcharts.com)
 
